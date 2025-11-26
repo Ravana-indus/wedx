@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>wedX – UX Color Themes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f5f5f7;
+        margin: 0;
+        padding: 24px;
+        color: #111827;
+      }
+      h1 {
+        margin-bottom: 4px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      }
+      .swatches {
+        display: flex;
+        gap: 8px;
+        margin: 8px 0 12px;
+      }
+      .swatch {
+        flex: 1;
+        border-radius: 8px;
+        height: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+      .swatch span {
+        position: absolute;
+        bottom: 4px;
+        left: 6px;
+        font-size: 11px;
+        color: #111827;
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+      }
+      .meta {
+        font-size: 13px;
+        color: #4b5563;
+      }
+      ul {
+        padding-left: 18px;
+        margin: 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>wedX – Color Theme Explorer</h1>
+    <p class="meta">
+      Conceptual palettes to guide the wedX Tailwind/shadcn theme setup. These
+      are reference themes rather than final brand decisions.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Theme 1 – Calm Coordinator</h2>
+        <p class="meta">
+          Primary experience theme for planning views (Today, Checklist, Budget).
+        </p>
+        <div class="swatches">
+          <div class="swatch" style="background:#ec4899">
+            <span>primary #ec4899</span>
+          </div>
+          <div class="swatch" style="background:#f9a8d4">
+            <span>primary-soft #f9a8d4</span>
+          </div>
+          <div class="swatch" style="background:#0f766e">
+            <span>support #0f766e</span>
+          </div>
+          <div class="swatch" style="background:#fbbf24">
+            <span>accent #fbbf24</span>
+          </div>
+        </div>
+        <p class="meta">
+          - Calm neutrals with a warm accent for key actions.<br />
+          - Ideal for daily use without visual fatigue.
+        </p>
+        <ul>
+          <li>Use in: Today, Checklist, Events, Budget</li>
+          <li>Primary buttons: #ec4899 on white</li>
+          <li>Backgrounds: neutral-50 to neutral-100</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Theme 2 – Playful Celebration</h2>
+        <p class="meta">
+          Brighter, more expressive palette for inspiration-heavy surfaces.
+        </p>
+        <div class="swatches">
+          <div class="swatch" style="background:#e11d48">
+            <span>primary #e11d48</span>
+          </div>
+          <div class="swatch" style="background:#f97316">
+            <span>accent #f97316</span>
+          </div>
+          <div class="swatch" style="background:#22c55e">
+            <span>success #22c55e</span>
+          </div>
+          <div class="swatch" style="background:#0ea5e9">
+            <span>info #0ea5e9</span>
+          </div>
+        </div>
+        <p class="meta">
+          - Higher contrast and saturation for celebratory screens.<br />
+          - Works well for Inspiration, AI Planner highlights, success moments.
+        </p>
+        <ul>
+          <li>Use sparingly to avoid visual overload</li>
+          <li>Success toasts and celebration states</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Theme 3 – Luxe Evening</h2>
+        <p class="meta">
+          Darker, more luxurious palette suitable for night-mode or marketing.
+        </p>
+        <div class="swatches">
+          <div class="swatch" style="background:#0b1120">
+            <span>bg #0b1120</span>
+          </div>
+          <div class="swatch" style="background:#1f2937">
+            <span>surface #1f2937</span>
+          </div>
+          <div class="swatch" style="background:#facc15">
+            <span>accent-gold #facc15</span>
+          </div>
+          <div class="swatch" style="background:#f97316">
+            <span>accent-warm #f97316</span>
+          </div>
+        </div>
+        <p class="meta">
+          - Luxurious feel for future dark theme or marketing pages.<br />
+          - Not required for initial implementation but sets direction.
+        </p>
+        <ul>
+          <li>Use in: future dark mode, marketing landers</li>
+          <li>Requires careful contrast checks for AA/AAA</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+

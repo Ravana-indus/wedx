@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>wedX – UX Design Directions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f5f5f7;
+        margin: 0;
+        padding: 24px;
+        color: #111827;
+      }
+      h1 {
+        margin-bottom: 4px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        margin-top: 24px;
+      }
+      .card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      }
+      .meta {
+        font-size: 13px;
+        color: #4b5563;
+      }
+      ul {
+        padding-left: 18px;
+        margin: 6px 0;
+      }
+      h2 {
+        margin: 0 0 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>wedX – UX Design Directions</h1>
+    <p class="meta">
+      High-level layout and interaction directions for the core wedX web app.
+      These act as reference frames for designers implementing high-fidelity
+      mockups.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Direction 1 – Wizard-First OS</h2>
+        <p class="meta">
+          Full-screen, low-chrome wizard for first-time setup, followed by a
+          structured dashboard.
+        </p>
+        <ul>
+          <li>
+            First session: 5-step cultural wizard (type, events, vibe, rituals,
+            plan).
+          </li>
+          <li>
+            After completion: redirect to “Today” dashboard with tasks seeded
+            from wizard outputs.
+          </li>
+          <li>
+            Ideal when couples are overwhelmed and need strong guidance before
+            seeing a dense UI.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Direction 2 – Three-Column Control Room</h2>
+        <p class="meta">
+          Desktop experience that feels like a calm control room rather than a
+          generic admin panel.
+        </p>
+        <ul>
+          <li>
+            Left: vertical navigation with Today, Checklist, Events, Guests,
+            Vendors, Budget, AI Planner, Inspiration, Settings.
+          </li>
+          <li>
+            Center: primary content (Today’s tasks, event timeline, checklists).
+          </li>
+          <li>
+            Right: AI Planner, vendor conversations, and inspiration strip.
+          </li>
+          <li>
+            Mirrors mental model from ride-hailing and fintech apps: core
+            actions central, assistance on the side.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Direction 3 – Vendor & WhatsApp Bridge Hub</h2>
+        <p class="meta">
+          Focused flows and layouts for combining partner vendors with
+          WhatsApp-based vendors.
+        </p>
+        <ul>
+          <li>
+            Two-core tabs: “Find vendors” (partner marketplace) and “My vendors”
+            (booked/shortlisted + WhatsApp leads).
+          </li>
+          <li>
+            WhatsApp flows: simple rows with screenshot uploads, extracted
+            details, and quick actions (“create task”, “attach to budget”).
+          </li>
+          <li>
+            Keeps informal conversations from disappearing while preserving
+            simple mental model for users and developers.
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Direction 4 – AI-Coordinated Planning</h2>
+        <p class="meta">
+          Chat-based co-pilot tightly wired into events, tasks, vendors, and
+          budget.
+        </p>
+        <ul>
+          <li>
+            AI Planner lives in right rail or full-screen mode with deep links
+            into Today, Checklist, Events, Vendors, and Budget.
+          </li>
+          <li>
+            Responses always include structured actions (tasks, notes, changes)
+            rather than generic advice.
+          </li>
+          <li>
+            Couples can ask, “What are we missing for Poruwa?” and immediately
+            see checklists and tasks updated.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,20 @@
+generated: "2025-11-25"
+project: "wedX"
+project_type: "software"
+project_level: 1
+selected_track: "bmad-method"
+field_type: "greenfield"
+workflow_path: ".bmad/bmm/workflows/workflow-status/paths/method-greenfield.yaml"
+workflow_status:
+  brainstorm-project: skipped
+  research: skipped
+  product-brief: skipped
+  prd: docs/prd.md
+  validate-prd: docs/validation-report-2025-11-25.md
+  create-design: conditional
+  create-architecture: docs/architecture.md
+  create-epics-and-stories: docs/epics.md
+  test-design: recommended
+  validate-architecture: optional
+  implementation-readiness: docs/implementation-readiness-report-2025-11-25.md
+  sprint-planning: required
