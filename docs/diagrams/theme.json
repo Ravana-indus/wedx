@@ -1,0 +1,10 @@
+{
+  "name": "Professional",
+  "colors": {
+    "component": "#e3f2fd",
+    "database": "#e8f5e9",
+    "service": "#fff3e0",
+    "border": "#1976d2",
+    "text": "#1e1e1e"
+  }
+}

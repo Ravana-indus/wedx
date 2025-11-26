@@ -292,3 +292,17 @@ Story 1.3 is **Done** when:
 5. The session model supports roles and can be extended later.
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `1-3-configure-authentication-shell-placeholder` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+#### File List
+- lib/models/auth.ts
+- lib/auth/use-auth.tsx
+- app/layout.tsx
+- app/(app)/layout.tsx
+- app/auth/page.tsx
+- components/layout/top-bar.tsx
+
+#### Change Log
+- 2025-11-26: Implemented placeholder authentication shell with protected routes, mock session model, and `/auth` login experience for Story 1.3.
+
+#### Status
+Done

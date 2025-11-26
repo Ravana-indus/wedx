@@ -32,13 +32,13 @@ generated: "2025-11-26"
 project: "015-Wedx"
 project_key: "wedx"
 tracking_system: "file-system"
-story_location: "docs/sprint-artifacts"
+  story_location: "docs/sprint-artifacts"
 
 development_status:
   epic-1: backlog
   1-1-initialize-next-js-tailwind-shadcn-ui-project: done
-  1-2-implement-app-shell-with-sidebar-top-bar: backlog
-  1-3-configure-authentication-shell-placeholder: backlog
+  1-2-implement-app-shell-with-sidebar-top-bar: done
+  1-3-configure-authentication-shell-placeholder: done
   epic-1-retrospective: optional
 
   epic-2: backlog
