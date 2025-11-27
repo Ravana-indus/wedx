@@ -41,13 +41,13 @@ development_status:
   1-3-configure-authentication-shell-placeholder: done
   epic-1-retrospective: optional
 
-  epic-2: backlog
-  2-1-implement-step-1-wedding-type-selection: backlog
-  2-2-implement-step-2-multi-event-setup: backlog
-  2-3-implement-step-3-vibe-theme-capture: backlog
-  2-4-implement-step-4-rituals-configuration: backlog
-  2-5-implement-step-5-budget-management-collaborators: backlog
-  2-6-today-dashboard-initial-control-room: backlog
+  epic-2: in-progress
+  2-1-implement-step-1-wedding-type-selection: done
+  2-2-implement-step-2-multi-event-setup: done
+  2-3-implement-step-3-vibe-theme-capture: done
+  2-4-implement-step-4-rituals-configuration: done
+  2-5-implement-step-5-budget-management-collaborators: done
+  2-6-today-dashboard-initial-control-room: done
   epic-2-retrospective: optional
 
   epic-3: backlog
