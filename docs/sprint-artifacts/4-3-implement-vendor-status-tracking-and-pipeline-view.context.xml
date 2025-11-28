@@ -1,0 +1,92 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>3</storyId>
+    <title>Story 4.3 – Implement Vendor Status Tracking and Pipeline View</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-3-implement-vendor-status-tracking-and-pipeline-view.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple</asA>
+    <iWant>to track vendor status in a pipeline view</iWant>
+    <soThat>I can see progress from shortlist to booked and avoid gaps</soThat>
+    <tasks>
+      - Add vendor status fields and enums (e.g., shortlisted, contacted, quoted, booked, backup)
+      - Provide APIs to read/update vendor status and stage changes
+      - Build pipeline/Kanban-like UI grouping vendors by status with quick moves
+      - Show per-category/event summaries and allow filtering
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Vendor records include a persisted status field with defined stages
+    - Status changes available via API and reflected in list responses
+    - Pipeline view groups vendors by status and supports changing status
+    - Filters by category/event work; statuses persist on reload
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document
+        section: Vendors & WhatsApp bridge
+        snippet: Track vendor pipeline from discovery to booked; avoid double-booking.
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 4 story 4.3
+        snippet: Pipeline/status tracking for vendors.
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: FR mapping Vendors
+        snippet: UI app/vendors; API /api/vendors; DB vendor_leads/vendor_conversations.
+      - path: docs/ux-design-specification.md
+        title: wedX UX Design Specification
+        section: Vendor UX principles
+        snippet: Simple, parent-friendly pipeline; easy status changes.
+    </docs>
+    <code>
+      - path: app/vendors (to extend)
+        kind: page
+        symbol: VendorsPipeline
+        lines: n/a
+        reason: Pipeline UI grouped by status with drag/drop or dropdown
+      - path: app/api/vendors (to extend)
+        kind: api
+        symbol: Vendor status update
+        lines: n/a
+        reason: Allow status updates and listing by status
+    </code>
+    <dependencies>
+      - runtime: next@15, react@18
+      - styling/ui: tailwindcss, shadcn/ui
+      - testing: jest, @testing-library/react/user-event
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Keep REST envelope { data, error }; feature-first structure
+    - Status set should be clear and minimal; UX must stay simple (chips/dropdowns acceptable if drag-drop omitted)
+  </constraints>
+  <interfaces>
+    - name: UpdateVendorStatus
+      kind: REST endpoint
+      signature: PATCH /api/vendors/:id { status }
+      path: app/api/vendors/[id]/route.ts
+    - name: ListVendorsByStatus
+      kind: REST endpoint
+      signature: GET /api/vendors?status=shortlisted|contacted|booked
+      path: app/api/vendors/route.ts
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock fetch; use act-wrapped interactions for status changes.</standards>
+    <locations>__tests__/app/vendors, __tests__/app/api/vendors.</locations>
+    <ideas>
+      - Pipeline renders columns per status with vendors in correct columns
+      - Status change control triggers PATCH and re-renders in new column
+      - Filters by category/event adjust visible vendors
+    </ideas>
+  </tests>
+</story-context>

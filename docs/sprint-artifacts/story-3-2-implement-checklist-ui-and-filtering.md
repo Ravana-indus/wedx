@@ -1,4 +1,5 @@
 # Story 3.2 – Implement Checklist UI and Filtering
+Status: review
 
 ## 1. Story Summary
 
@@ -386,3 +387,27 @@ Story 3.2 is **Done** when:
 6. Implementation follows architecture and UX conventions.
 7. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `3-2-implement-checklist-ui-and-filtering` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/3-2-implement-checklist-ui-and-filtering.context.xml
+
+#### Debug Log
+- Plan: 1) Verify checklist UI implementation against ACs (filters, grouping, status toggle, notes, query param init). 2) Run test suite to ensure no regressions. 3) Update story metadata (status, file list, change log) and sprint-status to reflect completion.
+
+#### Completion Notes
+- Checklist UI implemented with filtering (time bucket/event/category/status), grouping, URL param initialization, status toggle, and notes editing tied to PATCH endpoint. Jewelry presets supported via shared UI toggle.
+- Added typed client helpers for checklist fetch/update and strengthened checklist page tests to cover filtering and status/notes updates. APIs already aligned to Story 3.1 envelope.
+- Tests: `npm test -- --runInBand` (pass; existing React act warnings remain).
+
+#### File List
+- app/checklist/page.tsx
+- lib/api/checklists.ts
+- app/api/checklist-items/[id]/route.ts
+- __tests__/app/checklist/page.test.tsx
+- docs/sprint-artifacts/sprint-status.yaml
+- docs/sprint-artifacts/story-3-2-implement-checklist-ui-and-filtering.md
+
+#### Change Log
+- 2025-11-29: Implemented checklist UI with filters, status/notes persistence, and tests; marked story ready for review.

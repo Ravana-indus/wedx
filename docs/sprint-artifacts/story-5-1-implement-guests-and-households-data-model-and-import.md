@@ -1,4 +1,5 @@
 # Story 5.1 – Implement Guests and Households Data Model and Import
+Status: review
 
 ## 1. Story Summary
 
@@ -445,3 +446,36 @@ Story 5.1 is **Done** when:
 5. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `5-1-implement-guests-and-households-data-model-and-import` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/5-1-guest-list-table-import.context.xml
+
+#### Debug Log
+- Added in-memory households/guests model and CSV importer to seed data with summary/errors; ensured household name reuse and wedding scoping.
+- Exposed REST endpoints for listing households with nested guests, creating/updating households and guests, and importing CSV via multipart or text.
+- Built `/guests` page with add household/guest forms, ungrouped guest handling, CSV import UI, and grouped household/guest display.
+- Added client helpers and tests for store, import, and UI flows; test suite passes (act warnings persist from existing suites).
+
+#### Completion Notes
+- Guests foundation delivered: CRUD APIs, CSV import, and /guests management UI using Tailwind + shadcn primitives. Data persists in in-memory store with standard {data,error} envelope.
+- Tests: `npm test -- --runInBand` (pass; existing React act warnings remain).
+
+#### File List
+- docs/sprint-artifacts/story-5-1-implement-guests-and-households-data-model-and-import.md
+- docs/sprint-artifacts/sprint-status.yaml
+- docs/sprint-artifacts/5-1-guest-list-table-import.context.xml
+- lib/guests/types.ts
+- lib/guests/store.ts
+- lib/guests/import.ts
+- lib/api/guests.ts
+- app/api/weddings/[id]/households/route.ts
+- app/api/weddings/[id]/guests/route.ts
+- app/api/weddings/[id]/guests/import/route.ts
+- app/api/households/[id]/route.ts
+- app/api/guests/[id]/route.ts
+- app/guests/page.tsx
+- __tests__/lib/guests/store.test.ts
+- __tests__/lib/guests/import.test.ts
+- __tests__/app/guests/page.test.tsx

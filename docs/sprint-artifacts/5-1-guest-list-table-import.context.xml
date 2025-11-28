@@ -1,0 +1,70 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>1</storyId>
+    <title>Story 5.1 – Implement Guests and Households Data Model and Import</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-1-implement-guests-and-households-data-model-and-import.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>couple</asA>
+    <iWant>to store all guests and households in wedX</iWant>
+    <soThat>we can manage invitations, RSVPs, and seating from one place</soThat>
+    <tasks>
+      - Model households and guests linked to weddings (with contact/role fields)
+      - CRUD APIs for households/guests with JSON envelopes
+      - CSV import that maps rows into households and guests with a summary
+      - Guests UI at /guests listing households/guests with add forms
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Households/guests data model exists with wedding linkage and contact fields
+    - GET/POST/PATCH endpoints for households and guests return updated data
+    - CSV upload to /guests creates households/guests and reports counts/errors
+    - /guests UI lists households with guests and supports add household/guest
+    - UX uses Tailwind + shadcn/ui and is clear for couples/parents
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - {path: "docs/prd.md", title: "Product Requirements Document", section: "Guests & Invitations", snippet: "Guest lists move from spreadsheets into wedX; support households, RSVPs, seating, and clear invite flows."}
+      - {path: "docs/epics.md", title: "wedX - Epic Breakdown", section: "Epic 5 guests/invitations", snippet: "Epic 5 covers guests/households, invitations & RSVP, and seating; Story 5.1 delivers core guest data foundation."}
+      - {path: "docs/architecture.md", title: "wedX Decision Architecture", section: "Guest & Table Management", snippet: "Feature modules via Next.js App Router; REST endpoints return { data, error }; guests, households, tables backed by relational schema keyed by wedding_id."}
+    </docs>
+    <code>
+      - {path: "lib/api/responses.ts", kind: "utility", symbol: "ok/badRequest/notFound", lines: "all", reason: "Use standard { data, error } envelope for new guest endpoints."}
+      - {path: "components/ui", kind: "ui primitives", symbol: "Button/Input/Card", lines: "all", reason: "Reuse shadcn-styled primitives for forms and lists on /guests."}
+      - {path: "__tests__", kind: "tests", symbol: "jest + RTL", lines: "all", reason: "Follow existing test structure for APIs and pages."}
+    </code>
+    <dependencies>
+      - node: { packages: { next: "^15.0.3", react: "^18.3.1", "react-dom": "^18.3.1", tailwindcss: "^3.4.1", typescript: "^5.3.3", jest: "^29.7.0", "@testing-library/react": "^14.1.2" } }
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Follow REST envelope { data, error } with ISO dates; keep in-memory stores consistent with existing patterns.
+    - Use Next.js App Router conventions; feature-first file placement under app/guests and app/api.
+    - UX per design system: Tailwind + shadcn/ui, clear labels for parents, avoid heavy UI.
+  </constraints>
+  <interfaces>
+    - {name: "ListHouseholds", kind: "REST", signature: "GET /api/weddings/:weddingId/households -> { households: Household[] }", path: "app/api/weddings/[id]/households"}
+    - {name: "CreateHousehold", kind: "REST", signature: "POST /api/weddings/:weddingId/households { name, address?, notes? }", path: "app/api/weddings/[id]/households"}
+    - {name: "CreateGuest", kind: "REST", signature: "POST /api/weddings/:weddingId/guests { firstName, householdId? }", path: "app/api/weddings/[id]/guests"}
+    - {name: "UpdateGuest", kind: "REST", signature: "PATCH /api/guests/:guestId { fields }", path: "app/api/guests/[id]"}
+    - {name: "ImportGuestsCSV", kind: "REST", signature: "POST /api/weddings/:weddingId/guests/import (multipart CSV)", path: "app/api/weddings/[id]/guests/import"}
+  </interfaces>
+  <tests>
+    <standards>Use Jest with @testing-library/react/user-event for UI; mock fetch for API helpers; keep responses in { data, error } shape.</standards>
+    <locations>__tests__/app/guests, __tests__/app/api/guests, __tests__/lib/guests</locations>
+    <ideas>
+      - AC1: Model defaults - creating household/guest sets weddingId and timestamps.
+      - AC2: Endpoints return created/updated entities and handle validation errors.
+      - AC3: CSV import summarises counts and reports bad rows.
+      - AC4: /guests page renders households with nested guests and supports add flows.
+    </ideas>
+  </tests>
+</story-context>

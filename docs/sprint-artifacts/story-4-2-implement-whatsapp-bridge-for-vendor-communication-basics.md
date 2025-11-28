@@ -1,4 +1,5 @@
 # Story 4.2 – Implement WhatsApp Bridge for Vendor Communication (Basics)
+Status: review
 
 ## 1. Story Summary
 
@@ -357,3 +358,31 @@ Story 4.2 is **Done** when:
 5. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `4-2-implement-whatsapp-bridge-for-vendor-communication-basics` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/4-2-implement-whatsapp-bridge-for-vendor-communication-basics.context.xml
+
+#### Debug Log
+- Added in-memory vendor communication logging for WhatsApp launches, with endpoint to record initiations and update last contacted.
+- Built WhatsApp link utility and wired buttons from vendor cards and event vendor list to open wa.me with logging.
+- Extended vendor APIs and client helpers to include WhatsApp logging; event detail now links vendors to WhatsApp.
+- Implemented vendor directory interactions (message on WhatsApp) and ensured tests cover creation, linking, and WhatsApp affordance.
+
+#### Completion Notes
+- WhatsApp bridge basics delivered: deep link via wa.me, logging via POST /api/vendors/:id/whatsapp, and “Last contacted” indicator on vendors.
+- Event vendor list shows WhatsApp link per vendor; directory shows message button and link when a number exists.
+- Tests: `npm test -- --runInBand` (pass; existing React act warnings remain).
+
+#### File List
+- docs/sprint-artifacts/story-4-2-implement-whatsapp-bridge-for-vendor-communication-basics.md
+- docs/sprint-artifacts/sprint-status.yaml
+- lib/vendors/whatsapp.ts
+- lib/vendors/communications.ts
+- lib/vendors/types.ts
+- lib/api/vendors.ts
+- app/api/vendors/[id]/whatsapp/route.ts
+- app/vendors/page.tsx
+- app/events/[eventId]/vendors-for-event.tsx
+- __tests__/app/vendors/page.test.tsx

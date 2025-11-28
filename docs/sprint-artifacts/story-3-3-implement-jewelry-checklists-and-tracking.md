@@ -1,4 +1,5 @@
 # Story 3.3 – Implement Jewelry Checklists and Tracking
+Status: done
 
 ## 1. Story Summary
 
@@ -398,3 +399,14 @@ Story 3.3 is **Done** when:
 6. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 7. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `3-3-implement-jewelry-checklists-and-tracking` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/3-3-implement-jewelry-checklists-and-tracking.context.xml
+
+#### Implementation Notes
+- Extended checklist templates with jewelry-specific entries per tradition/event and default owner/type metadata; generator now propagates jewelryType and jewelryOwner into items.
+- Added jewelry metadata fields to checklist items/types and API surface; PATCH endpoint supports jewelryOwner/jewelryType updates.
+- /checklist UI gained jewelry preset toggle, summary block, badges for jewelry items, and editable owner/type fields with persistence.
+- Tests updated for generator metadata and checklist UI behaviors; suite passing (React act warnings remain).

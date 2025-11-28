@@ -1,4 +1,5 @@
 # Story 3.4 – Implement Checklist Collaboration and Assignments (Basics)
+Status: review
 
 ## 1. Story Summary
 
@@ -367,3 +368,36 @@ Story 3.4 is **Done** when:
 6. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 7. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `3-4-implement-checklist-collaboration-and-assignments-basics` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/3-4-implement-checklist-collaboration-and-assignments-basics.context.xml
+
+#### Debug Log
+- Plan: add participant model/API, extend checklist types and PATCH surface with assignee fields, surface assignment display/editing and filters in UI, and cover with tests.
+- Implemented in-memory participant store and GET participants endpoint to seed couple/parent defaults.
+- Extended checklist items (types, generator, PATCH) with assigneeId/assigneeRole; client API updated to patch assignees.
+- Checklist UI now loads participants, shows assignee chips, supports assignee filter (all/unassigned/me/participant), and inline assignment dropdown per item; wiring persists via PATCH.
+- Added tests for filtering and assignment update interactions; full suite run with existing act warnings noted.
+
+#### Completion Notes
+- Assignment basics delivered: participants endpoint, checklist item assignee fields, UI display/edit, and filters including “My tasks”.
+- In-memory participant defaults seeded for demo; assignment PATCH persists assigneeId/assigneeRole and updates UI optimistically.
+- Tests: `npm test -- --runInBand` (pass; legacy React act warnings remain).
+
+#### File List
+- app/checklist/page.tsx
+- app/api/checklist-items/[id]/route.ts
+- app/api/weddings/[id]/participants/route.ts
+- lib/api/checklists.ts
+- lib/checklists/generator.ts
+- lib/checklists/types.ts
+- lib/participants/store.ts
+- lib/participants/types.ts
+- __tests__/app/checklist/page.test.tsx
+- docs/sprint-artifacts/sprint-status.yaml
+- docs/sprint-artifacts/story-3-4-implement-checklist-collaboration-and-assignments-basics.md
+
+#### Change Log
+- 2025-11-29: Added participant/assignee support across checklist APIs and UI with tests; marked story ready for review.

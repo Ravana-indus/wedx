@@ -1,0 +1,81 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>1</storyId>
+    <title>Story 4.1 – Implement Vendor Directory and Basic Linking</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-1-implement-vendor-directory-and-basic-linking.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple</asA>
+    <iWant>a vendor directory with basic filters and linking into my planning</iWant>
+    <soThat>I can discover and shortlist vendors for my events</soThat>
+    <tasks>
+      - Build vendor directory listing with filters per story scope
+      - Support shortlisting/linking vendors to events/checklists
+      - Expose APIs to fetch vendors and persist shortlist/links
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Vendor directory page exists with specified filters
+    - Users can shortlist/save vendors and links persist
+    - Vendors can be associated with events/checklist items per story requirements
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document
+        section: Vendor marketplace & WhatsApp bridge
+        snippet: Partner vendor discovery, filters, shortlist and booking basics.
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 4 stories
+        snippet: Partner vendor listing and shortlist requirements.
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: FR mapping Vendors
+        snippet: UI app/vendors, API /api/vendors, DB vendors/vendor_leads.
+    </docs>
+    <code>
+      - path: app/vendors (to be added)
+        kind: page
+        symbol: VendorsPage
+        lines: n/a
+        reason: Implement vendor directory UI
+    </code>
+    <dependencies>
+      - runtime: next@15, react@18
+      - styling/ui: tailwindcss, shadcn/ui
+      - testing: jest, @testing-library/react
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Follow REST envelope { data, error }; feature-first structure
+    - Use wedX design system; avoid overwhelming UI
+  </constraints>
+  <interfaces>
+    - name: ListVendors
+      kind: REST endpoint
+      signature: GET /api/vendors?filters…
+      path: app/api/vendors/route.ts (to add)
+    - name: ShortlistVendor
+      kind: REST endpoint
+      signature: POST /api/vendors/:id/shortlist or PATCH vendor_leads
+      path: app/api/vendors/[id]/shortlist/route.ts (to add)
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock fetch; check filters and shortlist interactions.</standards>
+    <locations>__tests__/app/vendors, __tests__/app/api/vendors.</locations>
+    <ideas>
+      - Directory renders vendors from mocked API
+      - Filters narrow list
+      - Shortlist action persists via mocked API call
+    </ideas>
+  </tests>
+</story-context>

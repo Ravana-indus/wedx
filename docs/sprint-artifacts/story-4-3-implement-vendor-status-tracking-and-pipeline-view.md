@@ -1,4 +1,5 @@
 # Story 4.3 – Implement Vendor Status Tracking and Pipeline View
+Status: review
 
 ## 1. Story Summary
 
@@ -330,3 +331,35 @@ Story 4.3 is **Done** when:
 5. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `4-3-implement-vendor-status-tracking-and-pipeline-view` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/4-3-implement-vendor-status-tracking-and-pipeline-view.context.xml
+
+#### Debug Log
+- Added vendor status/priority model support with validation helpers and defaults; updated in-memory store and vendor API surfaces to return status consistently and expose a dedicated PATCH /api/vendors/:id/status endpoint.
+- Extended vendor directory UI with status badges, inline status dropdowns, priority chips, and initial status/priority selection in the add form; linked to new pipeline view.
+- Built `/vendors/pipeline` Kanban-style view with status columns, category/event filters, status change controls, and WhatsApp/priority indicators.
+- Surfaced status badges in event vendor listings so couples see booking progress per event.
+
+#### Completion Notes
+- Vendor pipeline and status tracking delivered: statuses persisted via new API, defaults applied to existing vendors, UI shows and edits status across vendors directory, pipeline, and event vendor lists.
+- Tests: `npm test -- --runInBand` (pass; existing React act warnings remain).
+
+#### File List
+- docs/sprint-artifacts/story-4-3-implement-vendor-status-tracking-and-pipeline-view.md
+- docs/sprint-artifacts/sprint-status.yaml
+- lib/vendors/types.ts
+- lib/vendors/status.ts
+- lib/vendors/store.ts
+- lib/api/vendors.ts
+- app/api/weddings/[id]/vendors/route.ts
+- app/api/vendors/[id]/route.ts
+- app/api/vendors/[id]/status/route.ts
+- app/vendors/page.tsx
+- app/vendors/pipeline/page.tsx
+- app/events/[eventId]/vendors-for-event.tsx
+- __tests__/lib/vendors/store.test.ts
+- __tests__/app/vendors/page.test.tsx
+- __tests__/app/vendors/pipeline.test.tsx

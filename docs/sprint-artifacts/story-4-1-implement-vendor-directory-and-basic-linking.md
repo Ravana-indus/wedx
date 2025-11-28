@@ -1,4 +1,5 @@
 # Story 4.1 – Implement Vendor Directory and Basic Linking
+Status: review
 
 ## 1. Story Summary
 
@@ -395,3 +396,34 @@ Story 4.1 is **Done** when:
 5. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `4-1-implement-vendor-directory-and-basic-linking` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/4-1-implement-vendor-directory-and-basic-linking.context.xml
+
+#### Debug Log
+- Built in-memory vendor model/store and REST endpoints for listing, creating, updating, and linking vendors to events; added event-level vendor listing.
+- Implemented `/vendors` page with add form, vendor cards, and event linking controls; event detail page now shows linked vendors.
+- Added client API helper and tests for vendor store and UI interactions.
+
+#### Completion Notes
+- Delivered vendor directory with add/edit/linking using in-memory store and JSON envelope; event detail page renders linked vendors via shared data.
+- APIs: GET/POST `/api/weddings/:id/vendors`, PATCH `/api/vendors/:id`, GET `/api/events/:id/vendors`.
+- UI: `/vendors` page lists vendors, allows creation and event linking; event detail uses client fetch to display linked vendors.
+- Tests: `npm test -- --runInBand` (pass; existing React act warnings remain).
+
+#### File List
+- docs/sprint-artifacts/story-4-1-implement-vendor-directory-and-basic-linking.md
+- docs/sprint-artifacts/sprint-status.yaml
+- app/vendors/page.tsx
+- app/events/[eventId]/page.tsx
+- app/events/[eventId]/vendors-for-event.tsx
+- app/api/weddings/[id]/vendors/route.ts
+- app/api/vendors/[id]/route.ts
+- app/api/events/[id]/vendors/route.ts
+- lib/vendors/types.ts
+- lib/vendors/store.ts
+- lib/api/vendors.ts
+- __tests__/app/vendors/page.test.tsx
+- __tests__/lib/vendors/store.test.ts

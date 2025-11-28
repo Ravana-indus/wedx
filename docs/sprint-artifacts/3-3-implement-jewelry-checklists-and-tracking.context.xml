@@ -1,0 +1,126 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>3</storyId>
+    <title>Story 3.3 – Implement Jewelry Checklists and Tracking</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-3-3-implement-jewelry-checklists-and-tracking.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple and families</asA>
+    <iWant>a dedicated jewelry checklist view and metadata</iWant>
+    <soThat>we don’t miss culturally important pieces and know who is responsible</soThat>
+    <tasks>
+      - Extend checklist templates with jewelry-specific entries per tradition/event/ritual and default owners/types
+      - Add jewelry metadata fields (jewelryType, jewelryOwner) to items and expose via APIs
+      - Add jewelry-focused filter/tab and summary (counts, per-event breakdown) on /checklist
+      - Show jewelry badges and editable owner/type in item details; persist via PATCH
+      - Support URL presets (?category=jewelry or ?jewelry=true) for deep links
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Seed jewelry templates covering Poruwa, Hindu, Christian, Homecoming/Reception with category=jewelry, isJewelry=true, weddingTypes/eventTypes/ritualKeys
+    - Generated items carry isJewelry, jewelryType, jewelryOwner defaults
+    - /checklist jewelry filter/tab works; URL preset initializes jewelry-only view
+    - Jewelry summary shows total and per-event completion
+    - Jewelry owner/type editable and persisted via PATCH /api/checklist-items/:id
+    - UI clearly surfaces jewelry as first-class, aligned with wedX design system
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document: Wedding & Events OS (Sri Lanka)
+        section: FR-007 Jewelry Module - Critical
+        snippet: "Dedicated module to manage rings, Thali/Thirumangalyam, sets, rentals with pickup/return deadlines."
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: FR Category to Architecture Mapping – Master Checklist & Modules
+        snippet: "UI: app/checklist; API: /api/checklists; DB: checklist_categories, checklist_items."
+      - path: docs/ux-design-specification.md
+        title: wedX UX Design Specification
+        section: Core UX / Checklist patterns
+        snippet: "Never overwhelm; focused subset; parents can understand; use shadcn/ui + Tailwind tokens."
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 3 Story 3.3
+        snippet: "Jewelry module with dedicated section; jewelry items linked back into main checklist."
+      - path: docs/sprint-artifacts/story-3-2-implement-checklist-ui-and-filtering.md
+        title: Story 3.2 – Implement Checklist UI and Filtering
+        section: Acceptance Criteria
+        snippet: "Checklist UI, filters, status updates, notes editing, URL-based filters."
+    </docs>
+    <code>
+      - path: lib/checklists/types.ts
+        kind: types
+        symbol: ChecklistItem
+        lines: 1-140
+        reason: Base types to extend with jewelryType/jewelryOwner
+      - path: lib/checklists/templates.ts
+        kind: config
+        symbol: checklistTemplates
+        lines: 1-120
+        reason: Seed templates; to extend with jewelry catalog by tradition/event/ritual
+      - path: lib/checklists/generator.ts
+        kind: service
+        symbol: generateChecklist
+        lines: 1-140
+        reason: Copies template fields into items; needs jewelry metadata propagation
+      - path: lib/checklists/store.ts
+        kind: store
+        symbol: summarizeChecklist
+        lines: 1-180
+        reason: Grouping/summaries; extend to include jewelry summary helpers if needed
+      - path: app/checklist/page.tsx
+        kind: page
+        symbol: ChecklistPage
+        lines: 1-400
+        reason: UI filters, grouping; to add jewelry preset, summary, metadata editing
+      - path: app/api/weddings/[id]/checklists/route.ts
+        kind: api
+        symbol: GET /api/weddings/:id/checklists
+        lines: 1-40
+        reason: Ensure jewelry fields returned
+      - path: app/api/checklist-items/[id]/route.ts
+        kind: api
+        symbol: PATCH /api/checklist-items/:id
+        lines: 1-80
+        reason: Allow updating jewelryOwner/type in addition to status/notes
+    </code>
+    <dependencies>
+      - runtime: next@15, react@18
+      - styling/ui: tailwindcss, shadcn/ui primitives (card, select, badge), lucide-react
+      - testing: jest, @testing-library/react, user-event
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Follow existing checklist API envelope { data, error }; App Router conventions
+    - Keep UX calm/readable; jewelry clearly distinguished (badges, preset filter)
+    - Types in TypeScript; dates as ISO strings; feature-first file structure
+  </constraints>
+  <interfaces>
+    - name: GetChecklist
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/checklists → items including isJewelry, jewelryType, jewelryOwner
+      path: app/api/weddings/[id]/checklists/route.ts
+    - name: UpdateChecklistItem
+      kind: REST endpoint
+      signature: PATCH /api/checklist-items/:id → updates status/notes/jewelryOwner/jewelryType
+      path: app/api/checklist-items/[id]/route.ts
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock fetch/API helpers; use act-wrapped interactions where needed.</standards>
+    <locations>__tests__/app/checklist, __tests__/lib/checklists.</locations>
+    <ideas>
+      - Templates include jewelry entries (assert generator produces items with isJewelry, jewelryType, jewelryOwner)
+      - Checklist API returns jewelry metadata
+      - UI preset (?category=jewelry) filters to jewelry items and shows summary counts
+      - Editing jewelryOwner/type persists via PATCH mock
+    </ideas>
+  </tests>
+</story-context>

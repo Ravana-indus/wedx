@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getEventById } from "../page";
+import VendorsForEvent from "./vendors-for-event";
 import {
   Card,
   CardContent,
@@ -116,12 +117,11 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           <CardHeader>
             <CardTitle className="text-sm">Vendors</CardTitle>
             <CardDescription className="text-xs">
-              Placeholder for vendor assignments for this event.
+              Vendors linked to this event.
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-xs text-muted-foreground">
-            This area will later connect to your vendor list and WhatsApp
-            conversations.
+          <CardContent className="text-xs text-muted-foreground space-y-2">
+            <VendorsForEvent eventId={event?.id ?? ""} />
           </CardContent>
         </Card>
 

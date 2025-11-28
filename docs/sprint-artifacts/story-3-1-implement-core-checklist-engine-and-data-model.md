@@ -1,5 +1,7 @@
 # Story 3.1 – Implement Core Checklist Engine and Data Model
 
+Status: done
+
 ## 1. Story Summary
 
 **As a** couple (and our families)  
@@ -412,3 +414,14 @@ Story 3.1 is **Done** when:
 6. Implementation follows architecture and UX conventions where applicable.
 7. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `3-1-implement-core-checklist-engine-and-data-model` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/3-1-implement-core-checklist-engine-and-data-model.context.xml
+
+#### Implementation Notes
+- Added checklist domain types, seed templates (global/event/ritual/jewelry), and generation logic with grouping helpers under `lib/checklists`.
+- Exposed REST endpoints for checklist generation, retrieval, and item updates using Next.js App Router (`app/api/weddings/[id]/checklists` and `app/api/checklist-items/[id]`).
+- Implemented in-memory store placeholder (per-boot) pending persistent DB wiring; APIs return `{ data, error }` envelope per architecture conventions.
+- Added Jest coverage for generator/grouping and stabilized design-system tests.

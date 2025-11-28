@@ -1,0 +1,73 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>3</storyId>
+    <title>Story 5.3 – Implement Seating Plans and Per-Event Attendance View</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-3-implement-seating-plans-and-per-event-attendance-view.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>couple</asA>
+    <iWant>to plan seating per event and see who is attending</iWant>
+    <soThat>we can manage tables/sections and capacities without spreadsheets</soThat>
+    <tasks>
+      - Model seating tables/sections and seating assignments per event
+      - APIs to manage tables and assignments and list attending guests
+      - Seating UI/tab for an event showing tables, capacity vs assigned, and unassigned guests
+      - Event detail shows seating summary with link to manage seating
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - seating_tables and seating_assignments exist linking weddingId/eventId/guestId and tableId
+    - APIs: list/create/update tables; list/create/update/delete assignments; list attending guests
+    - Seating UI lists tables with capacities, unassigned guests, allows assigning/moving guests and shows over-capacity warnings
+    - Event detail shows seating summary and navigate to seating view
+    - UI follows Tailwind + shadcn/ui and stays list-based (no floorplan)
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - {path: "docs/prd.md", title: "Product Requirements Document", section: "Seating & attendance", snippet: "Per-event seating and attendance view to replace ad-hoc spreadsheets; track capacity vs assignments."}
+      - {path: "docs/epics.md", title: "wedX - Epic Breakdown", section: "Epic 5 seating", snippet: "Epic 5 story 5.3 delivers seating tables/assignments and per-event attendance view."}
+      - {path: "docs/ux-design-specification.md", title: "wedX UX Design Specification", section: "Seating UX principles", snippet: "Start with list-based assignment, show capacity vs assigned, keep flows simple for parents."}
+      - {path: "docs/architecture.md", title: "wedX Decision Architecture", section: "Guest & Table Management", snippet: "Feature modules under app/events; REST APIs with { data, error }; relational linking on wedding_id/event_id/table_id."}
+    </docs>
+    <code>
+      - {path: "lib/api/responses.ts", kind: "utility", symbol: "ok/badRequest/notFound", lines: "all", reason: "Re-use response envelope for seating endpoints."}
+      - {path: "app/events/[eventId]/page.tsx", kind: "page", symbol: "EventDetailPage", lines: "all", reason: "Add seating summary link in event detail."}
+      - {path: "components/ui", kind: "ui primitives", symbol: "Button/Input/Card/Table", lines: "all", reason: "Build seating lists and controls using existing primitives."}
+    </code>
+    <dependencies>
+      - node: { packages: { next: "^15.0.3", react: "^18.3.1", tailwindcss: "^3.4.1", jest: "^29.7.0", "@testing-library/react": "^14.1.2" } }
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Depend on guests/households/invitations from Stories 5.1–5.2; assignments must respect attending guests.
+    - Use list-based UI; avoid drag-and-drop; show capacity warnings clearly.
+    - Keep REST envelope and wedding scoping consistent with existing modules.
+  </constraints>
+  <interfaces>
+    - {name: "ListSeatingTables", kind: "REST", signature: "GET /api/events/:eventId/seating-tables -> { tables }", path: "app/api/events/[eventId]/seating-tables"}
+    - {name: "CreateSeatingTable", kind: "REST", signature: "POST /api/events/:eventId/seating-tables { name, capacity?, section?, notes? }", path: "app/api/events/[eventId]/seating-tables"}
+    - {name: "UpdateSeatingTable", kind: "REST", signature: "PATCH /api/seating-tables/:tableId { fields }", path: "app/api/seating-tables/[id]"}
+    - {name: "ListAttendingGuests", kind: "REST", signature: "GET /api/events/:eventId/attending-guests -> { guests }", path: "app/api/events/[eventId]/attending-guests"}
+    - {name: "ListSeatingAssignments", kind: "REST", signature: "GET /api/events/:eventId/seating-assignments -> { assignments }", path: "app/api/events/[eventId]/seating-assignments"}
+    - {name: "CreateOrUpdateAssignments", kind: "REST", signature: "POST /api/events/:eventId/seating-assignments { assignments }", path: "app/api/events/[eventId]/seating-assignments"}
+    - {name: "DeleteAssignment", kind: "REST", signature: "DELETE /api/seating-assignments/:assignmentId", path: "app/api/seating-assignments/[id]"}
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock fetch; assert envelopes and list-based UI updates; use act where needed.</standards>
+    <locations>__tests__/app/events, __tests__/app/api/seating, __tests__/lib/seating</locations>
+    <ideas>
+      - AC1: Creating tables/assignments sets weddingId/eventId links and defaults capacity/notes.
+      - AC2: Seating endpoints enforce event scope and return assigned counts; deletes remove assignments.
+      - AC3: Seating UI lists tables and unassigned guests, supports assigning/moving and shows over-capacity banner.
+      - AC4: Event detail displays seating summary stats and navigation link.
+    </ideas>
+  </tests>
+</story-context>

@@ -1,4 +1,5 @@
 # Story 5.2 – Implement Invitations and RSVP per Event
+Status: ready-for-dev
 
 ## 1. Story Summary
 
@@ -413,3 +414,13 @@ Story 5.2 is **Done** when:
 5. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `5-2-implement-invitations-and-rsvp-per-event` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/5-2-rsvp-tracking.context.xml
+
+#### File List
+- docs/sprint-artifacts/story-5-2-implement-invitations-and-rsvp-per-event.md
+- docs/sprint-artifacts/sprint-status.yaml
+- docs/sprint-artifacts/5-2-rsvp-tracking.context.xml

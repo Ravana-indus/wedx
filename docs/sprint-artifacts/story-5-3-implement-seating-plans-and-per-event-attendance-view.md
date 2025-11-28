@@ -1,4 +1,5 @@
 # Story 5.3 – Implement Seating Plans and Per-Event Attendance View
+Status: ready-for-dev
 
 ## 1. Story Summary
 
@@ -455,3 +456,13 @@ Story 5.3 is **Done** when:
 5. Implementation follows architecture and UX conventions (Next.js App Router, Tailwind, shadcn/ui).
 6. `docs/sprint-artifacts/sprint-status.yaml` is updated to move:
    - `5-3-implement-seating-plans-and-per-event-attendance-view` from `backlog` → `drafted` (once this story file exists) and later `done` when implemented.
+
+### Dev Agent Record
+
+#### Context Reference
+- docs/sprint-artifacts/5-3-basic-seating-assignment.context.xml
+
+#### File List
+- docs/sprint-artifacts/story-5-3-implement-seating-plans-and-per-event-attendance-view.md
+- docs/sprint-artifacts/sprint-status.yaml
+- docs/sprint-artifacts/5-3-basic-seating-assignment.context.xml

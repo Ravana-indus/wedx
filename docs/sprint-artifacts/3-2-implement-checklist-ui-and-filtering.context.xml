@@ -1,0 +1,142 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>2</storyId>
+    <title>Story 3.2 – Implement Checklist UI and Filtering</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-3-2-implement-checklist-ui-and-filtering.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple and families</asA>
+    <iWant>an organized checklist interface with filters</iWant>
+    <soThat>we can easily see, filter, and update tasks without missing critical items</soThat>
+    <tasks>
+      - Build /checklist page under AppShell, loading generated checklist items for the current wedding
+      - Implement filters (time bucket, event, category, status) with URL-based initialization
+      - Group items by time bucket; show category/event/status/jewelry indicators
+      - Support status toggle via PATCH /api/checklist-items/:id with optimistic UI
+      - Support viewing description and editing notes with persistence
+      - Enable deep links from Today dashboard with query params for filters
+      - Keep UX aligned with wedX design system and avoid overwhelming views
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - /checklist exists and loads checklist data in AppShell layout
+    - Filters (time bucket, event, category, status) update the list; URL params initialize filters
+    - Items grouped by time bucket; rows show title, category, event (if any), status control, jewelry indicator
+    - Status toggle persists via PATCH /api/checklist-items/:id and survives reload
+    - Item details show description/notes; notes edits persist
+    - Today dashboard links can deep-link to filtered checklist
+    - UI uses wedX design system and is readable/not overwhelming
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document: Wedding & Events OS (Sri Lanka)
+        section: 4.2 Smart Checklist & Modules
+        snippet: "Checklists must be readable/navigable with time, event, and category filters; jewelry module is critical."
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: FR Category to Architecture Mapping – Master Checklist & Modules
+        snippet: "UI: app/checklist; API: /api/tasks, /api/checklists; DB: checklist_categories, checklist_items; JSON envelope { data, error }."
+      - path: docs/ux-design-specification.md
+        title: wedX UX Design Specification
+        section: Core User Experience & Design System
+        snippet: "Never overwhelm; focused subset by default; clear labels; progress feels motivating. Use shadcn/ui + Tailwind tokens."
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 3 Story 3.1/3.2
+        snippet: "After engine, build Checklist UI with filters; prerequisites Epic 2; checklist_categories defaults; filtering/time buckets."
+      - path: docs/sprint-artifacts/story-3-1-implement-core-checklist-engine-and-data-model.md
+        title: Story 3.1 – Implement Core Checklist Engine and Data Model
+        section: Acceptance Criteria
+        snippet: "APIs: POST generate, GET checklist, PATCH checklist items; template seed; grouping/groupable response for UI."
+    </docs>
+    <code>
+      - path: app/checklist/page.tsx
+        kind: page
+        symbol: ChecklistPage
+        lines: 1-60
+        reason: Placeholder checklist hub to replace with real UI per story
+      - path: app/(app)/checklist/page.tsx
+        kind: page
+        symbol: ChecklistPage
+        lines: 1-15
+        reason: App Router checklist segment stub
+      - path: app/(app)/dashboard/page.tsx
+        kind: page
+        symbol: DashboardPage
+        lines: 1-180
+        reason: Today dashboard links to checklist; needs deep-link behavior
+      - path: components/layout/sidebar-nav.tsx
+        kind: navigation
+        symbol: SidebarNav
+        lines: 1-70
+        reason: Primary nav entry for /checklist; shell integration
+      - path: lib/checklists/types.ts
+        kind: types
+        symbol: Checklist types
+        lines: 1-120
+        reason: Shared checklist domain types (category/timeBucket/status/item shape)
+      - path: lib/checklists/generator.ts
+        kind: service
+        symbol: generateChecklist
+        lines: 1-140
+        reason: Server-side generation; informs expected fields for UI
+      - path: lib/checklists/store.ts
+        kind: store
+        symbol: summarizeChecklist
+        lines: 1-170
+        reason: In-memory store and grouping helpers used by GET checklist API
+      - path: app/api/weddings/[id]/checklists/route.ts
+        kind: api
+        symbol: GET /api/weddings/:id/checklists
+        lines: 1-40
+        reason: Checklist retrieval endpoint powering UI
+      - path: app/api/checklist-items/[id]/route.ts
+        kind: api
+        symbol: PATCH /api/checklist-items/:id
+        lines: 1-80
+        reason: Status/notes update endpoint for item interactions
+    </code>
+    <dependencies>
+      - runtime: next@15, react@18, react-dom@18
+      - styling: tailwindcss@3, tailwindcss-animate, class-variance-authority, clsx
+      - ui: @radix-ui/react-dialog, tabs, toast, slot; lucide-react
+      - testing: jest@29, @testing-library/react, @testing-library/user-event, jest-environment-jsdom
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Use App Router and existing AppShell; keep feature-first structure.
+    - Follow REST envelope { data, error }; keep TypeScript types shared.
+    - Avoid overwhelming UI; default to focused subset; align with wedX tokens and shadcn/ui components.
+    - Dates as ISO strings at API boundary; React client can format as needed.
+  </constraints>
+  <interfaces>
+    - name: GetChecklist
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/checklists → { data: ChecklistSummary }
+      path: app/api/weddings/[id]/checklists/route.ts
+    - name: UpdateChecklistItem
+      kind: REST endpoint
+      signature: PATCH /api/checklist-items/:id → updates status/notes/dueDate
+      path: app/api/checklist-items/[id]/route.ts
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL with jsdom; prefer act-wrapped interactions; test filtering, grouping, status/notes updates via mocked fetch.</standards>
+    <locations>__tests__/app/checklist, __tests__/lib/api, or alongside page.</locations>
+    <ideas>
+      - AC1: renders checklist with groups after fetching GET /api/weddings/:id/checklists (mocked)
+      - AC2: filters by category/event/status/timeBucket using query params initialization
+      - AC4: toggling status calls PATCH and updates UI
+      - AC5: editing notes persists via PATCH and reflects on re-fetch
+      - AC6: link from dashboard query param initializes filters
+    </ideas>
+  </tests>
+</story-context>

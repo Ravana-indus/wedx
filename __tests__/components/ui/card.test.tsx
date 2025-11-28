@@ -68,7 +68,8 @@ describe("Card", () => {
       </Card>
     );
 
-    const content = screen.getByText("Content").parentElement;
-    expect(content).toHaveClass("p-6", "pt-0");
+    const content = screen.getByText("Content").closest(".p-6");
+    expect(content).toHaveClass("p-6");
+    expect(content).toHaveClass("pt-0");
   });
 });

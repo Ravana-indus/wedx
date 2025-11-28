@@ -1,0 +1,70 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>5</epicId>
+    <storyId>2</storyId>
+    <title>Story 5.2 – Implement Invitations and RSVP per Event</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-5-2-implement-invitations-and-rsvp-per-event.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>couple</asA>
+    <iWant>to send invitations and track RSVPs per event</iWant>
+    <soThat>we know attendance per event for seating and catering</soThat>
+    <tasks>
+      - Model guest/event invitations with status and counts (household or guest level)
+      - APIs to list/create/update invitations and RSVP summaries per event
+      - UI tab for invitations/RSVP with per-event table, status edits, counts
+      - Event detail shows RSVP summary and links to manage invitations
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - guest_event_invitations entity exists linking weddingId, eventId, householdId/guestId with statuses/counts
+    - Endpoints: list/create/update invitations, RSVP summary per event with correct aggregates
+    - /guests/invitations (or tab) lets select event, view invites, edit status/counts with persistence
+    - Event detail shows RSVP summary and deep link to invitations UI
+    - UI uses Tailwind + shadcn/ui and labels are clear
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - {path: "docs/prd.md", title: "Product Requirements Document", section: "Guests & RSVP", snippet: "Per-event invitations and RSVP tracking replace scattered spreadsheets; households can respond for multiple guests."}
+      - {path: "docs/epics.md", title: "wedX - Epic Breakdown", section: "Epic 5 invitations/RSVP", snippet: "Epic 5 story 5.2 delivers invitations and per-event RSVP, building on guests/households."}
+      - {path: "docs/ux-design-specification.md", title: "wedX UX Design Specification", section: "RSVP UX principles", snippet: "Think in events and households; simple status labels and counts for parents."}
+      - {path: "docs/architecture.md", title: "wedX Decision Architecture", section: "Guest & Table Management", snippet: "REST JSON API via app/api; relational linking on wedding_id/event_id; reuse standard envelopes."}
+    </docs>
+    <code>
+      - {path: "lib/api/responses.ts", kind: "utility", symbol: "ok/badRequest/notFound", lines: "all", reason: "Keep invitation APIs on standard envelope."}
+      - {path: "app/events/[eventId]/page.tsx", kind: "page", symbol: "EventDetailPage", lines: "all", reason: "Add RSVP summary entry point on event detail."}
+      - {path: "components/ui", kind: "ui primitives", symbol: "Button/Input/Card/Table", lines: "all", reason: "Build invitations tab/table with existing primitives."}
+    </code>
+    <dependencies>
+      - node: { packages: { next: "^15.0.3", react: "^18.3.1", tailwindcss: "^3.4.1", jest: "^29.7.0", "@testing-library/react": "^14.1.2" } }
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Use existing guest/household IDs from Story 5.1; keep REST envelope { data, error } and ISO dates.
+    - Per-event filtering mandatory; invitations must respect wedding scoping.
+    - UI should remain list-based, no guest-facing send flows yet.
+  </constraints>
+  <interfaces>
+    - {name: "ListInvitations", kind: "REST", signature: "GET /api/events/:eventId/invitations -> { invitations }", path: "app/api/events/[eventId]/invitations"}
+    - {name: "CreateOrUpdateInvitations", kind: "REST", signature: "POST /api/events/:eventId/invitations { invitations: InvitationInput[] }", path: "app/api/events/[eventId]/invitations"}
+    - {name: "UpdateInvitation", kind: "REST", signature: "PATCH /api/invitations/:invitationId { status, counts }", path: "app/api/invitations/[id]"}
+    - {name: "RSVPSummary", kind: "REST", signature: "GET /api/events/:eventId/rsvp-summary -> { invited, attending, declined, maybe }", path: "app/api/events/[eventId]/rsvp-summary"}
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock fetch for API helpers; prefer act-wrapped interactions; keep envelope assertions.</standards>
+    <locations>__tests__/app/guests, __tests__/app/events, __tests__/app/api/invitations</locations>
+    <ideas>
+      - AC1: Invitation model creation links to event/guest/household IDs and defaults status.
+      - AC2: Bulk create/list APIs return accurate counts and handle invalid IDs.
+      - AC3: Invitations UI renders per-event table, edits status/counts, persists via PATCH.
+      - AC4: Event detail displays RSVP summary numbers matching API.
+    </ideas>
+  </tests>
+</story-context>

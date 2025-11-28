@@ -50,23 +50,23 @@ development_status:
   2-6-today-dashboard-initial-control-room: done
   epic-2-retrospective: optional
 
-  epic-3: backlog
-  3-1-master-checklist-categories-list-view: backlog
-  3-2-checklist-items-with-status-due-dates: backlog
-  3-3-jewelry-module-entity-ui: backlog
-  3-4-ritual-driven-checklist-auto-generation: backlog
+  epic-3: in-progress
+  3-1-implement-core-checklist-engine-and-data-model: done
+  3-2-implement-checklist-ui-and-filtering: review
+  3-3-implement-jewelry-checklists-and-tracking: done
+  3-4-implement-checklist-collaboration-and-assignments-basics: review
   epic-3-retrospective: optional
 
-  epic-4: backlog
-  4-1-partner-vendor-listing-shortlist: backlog
-  4-2-my-vendors-partner-flows: backlog
-  4-3-whatsapp-vendors-screenshot-logging: backlog
+  epic-4: in-progress
+  4-1-partner-vendor-listing-shortlist: review
+  4-2-my-vendors-partner-flows: in-progress
+  4-3-whatsapp-vendors-screenshot-logging: review
   epic-4-retrospective: optional
 
   epic-5: backlog
-  5-1-guest-list-table-import: backlog
-  5-2-rsvp-tracking: backlog
-  5-3-basic-seating-assignment: backlog
+  5-1-guest-list-table-import: review
+  5-2-rsvp-tracking: ready-for-dev
+  5-3-basic-seating-assignment: ready-for-dev
   epic-5-retrospective: optional
 
   epic-6: backlog

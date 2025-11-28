@@ -1,0 +1,125 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>1</storyId>
+    <title>Story 3.1 – Implement Core Checklist Engine and Data Model</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-3-1-implement-core-checklist-engine-and-data-model.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple and families</asA>
+    <iWant>structured checklists that reflect our wedding type, events, and rituals</iWant>
+    <soThat>we don&apos;t miss critical tasks or items and can track progress with confidence</soThat>
+    <tasks>
+      - Define checklist data model (templates, checklists, checklist items with category/time bucket/jewelry flags)
+      - Build checklist generation engine keyed on wedding type, events, and rituals with grouping metadata
+      - Implement persistence and APIs to generate, fetch, and update checklist items for a wedding
+      - Seed initial templates including global, event-specific, and jewelry-related tasks
+      - Ensure responses suit Today dashboard and future checklist UI (grouping/filtering ready)
+      - Document simple regeneration strategy and constraints
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Data model implemented: checklists + checklist_items linking weddingId/eventId/ritualId with type/category/time bucket/jewelry flag
+    - Templates defined: seed set covering global tasks, event-specific tasks, and jewelry items; filterable by wedding type/event type/ritual keys
+    - Generation endpoint works: POST /api/weddings/:id/checklists/generate creates checklist and items based on templates
+    - Checklist retrieval works: GET /api/weddings/:id/checklists returns checklist metadata and items grouped or groupable by time bucket/category/event
+    - Item update works: PATCH /api/checklist-items/:id updates status/notes/dueDate and persists
+    - Integration readiness: Today dashboard can fetch “next actions”; future checklist UI can use APIs without major refactors
+    - Technical quality: Next.js App Router, lib/ domain logic, app/api route handlers, TypeScript types reused
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document: Wedding & Events OS (Sri Lanka)
+        section: 4.2 Smart Checklist & Modules
+        snippet: "FR-006 (Master Categories): System generates tasks under: Venue, Catering, Décor, Photography, Attire, Rituals, Legal, Transport, and Logistics."
+      - path: docs/prd.md
+        title: Product Requirements Document: Wedding & Events OS (Sri Lanka)
+        section: FR-007 Jewelry Module - Critical
+        snippet: "Dedicated module to manage rings, Thali/Thirumangalyam (gold purchase tracking), sets, and rentals with pickup/return deadlines."
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: Data Architecture (High-Level)
+        snippet: "checklist_categories and checklist_items tables carry wedding/event links, status, due_date, assignee_role; jewelry_items track type, rental, custody_status, notes."
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: FR Category to Architecture Mapping – Master Checklist & Modules
+        snippet: "UI: app/checklist; API: /api/tasks, /api/checklists; DB: checklist_categories, checklist_items, checklist_assignments."
+      - path: docs/ux-design-specification.md
+        title: wedX UX Design Specification
+        section: Core User Experience
+        snippet: "First serious session: full-screen cultural wizard… outcome is a multi-event timeline plus seeded checklists… After the wizard: wedX drops couples into a Today dashboard showing tasks and timeline."
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 3 – Story 3.1
+        snippet: "Checklist screen shows master categories with counts; filters by event/time; prerequisites Epic 2; technical notes call for checklist_categories table with seeded defaults."
+    </docs>
+    <code>
+      - path: app/checklist/page.tsx
+        kind: page
+        symbol: ChecklistPage
+        lines: 1-52
+        reason: Placeholder checklist hub describing future wiring and linking back to dashboard
+      - path: app/(app)/checklist/page.tsx
+        kind: page
+        symbol: ChecklistPage
+        lines: 1-15
+        reason: App Router checklist route stub noting master/event-specific checklist shell
+      - path: app/(app)/dashboard/page.tsx
+        kind: page
+        symbol: DashboardPage
+        lines: 1-160
+        reason: Today dashboard stub referencing checklist next actions and routing to /checklist
+      - path: components/layout/sidebar-nav.tsx
+        kind: navigation
+        symbol: SidebarNav
+        lines: 1-64
+        reason: Primary nav reserves /checklist route; dictates shell integration for new pages
+    </code>
+    <dependencies>
+      - runtime: next@15.0.3, react@18.2.0, react-dom@18.2.0
+      - styling: tailwindcss@3.4.18, tailwindcss-animate@1.0.7, class-variance-authority, clsx
+      - ui: @radix-ui/react-dialog, @radix-ui/react-tabs, @radix-ui/react-toast, @radix-ui/react-slot, lucide-react
+      - tooling: typescript@5.2.2, eslint-config-next@15.0.3
+      - testing: jest@29.7.0 with jest-environment-jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Follow architecture patterns: feature-first structure (app/, components/, lib/), App Router, REST JSON responses shaped as { data, error }
+    - Naming rules: endpoints plural kebab-case, DB snake_case foreign keys (_id), React components PascalCase, files kebab-case
+    - Keep domain logic in lib/ modules; route handlers thin
+    - Use TypeScript types shared across handlers and UI; dates as ISO strings at API boundary
+  </constraints>
+  <interfaces>
+    - name: GenerateChecklist
+      kind: REST endpoint
+      signature: POST /api/weddings/:id/checklists/generate → creates checklist and regenerates items from templates
+      path: app/api/weddings/[id]/checklists/generate/route.ts (to be added)
+    - name: GetChecklist
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/checklists → returns checklist metadata plus items grouped/groupable by time bucket, category, event
+      path: app/api/weddings/[id]/checklists/route.ts (to be added)
+    - name: UpdateChecklistItem
+      kind: REST endpoint
+      signature: PATCH /api/checklist-items/:id → updates status/notes/dueDate for a checklist item
+      path: app/api/checklist-items/[id]/route.ts (to be added)
+  </interfaces>
+  <tests>
+    <standards>Jest with next/jest config and jsdom; React Testing Library + user-event; setupFilesAfterEnv=jest.setup.js; prefer feature-aligned tests with coverage for UI and route handlers.</standards>
+    <locations>__tests__/, alongside feature files for new handlers/components.</locations>
+    <ideas>
+      - AC1/2: Template seed includes global/event/jewelry items and filters by wedding type/event/ritual input
+      - AC3: POST /api/weddings/:id/checklists/generate creates checklist if missing and returns generated items; regeneration replaces old items
+      - AC4: GET /api/weddings/:id/checklists groups or provides grouping metadata for time bucket/category/event
+      - AC5: PATCH /api/checklist-items/:id persists status/notes/dueDate updates
+      - AC6: Response shape supports Today dashboard “next actions” subset without additional refactors
+    </ideas>
+  </tests>
+</story-context>

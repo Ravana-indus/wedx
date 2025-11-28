@@ -1,0 +1,87 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>2</storyId>
+    <title>Story 4.2 – Implement WhatsApp Bridge for Vendor Communication (Basics)</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-4-2-implement-whatsapp-bridge-for-vendor-communication-basics.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple</asA>
+    <iWant>to log WhatsApp conversations with non-partner vendors</iWant>
+    <soThat>I can track quotes and commitments outside the partner marketplace</soThat>
+    <tasks>
+      - Add WhatsApp vendor entry model and storage (metadata + screenshot URLs)
+      - Build UI to create entries, upload screenshots, and set status
+      - Expose APIs to CRUD WhatsApp vendor entries and link to events
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - WhatsApp vendor entry creation with label/event and status
+    - Screenshot upload and persistence
+    - List view shows entries with statuses; statuses editable
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document
+        section: WhatsApp bridge
+        snippet: Log conversations with non-partner vendors; track status and screenshots.
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 4 stories
+        snippet: WhatsApp vendor logging requirements.
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: Vendors/WhatsApp bridge mapping
+        snippet: DB vendor_whatsapp_entries; storage in object store.
+    </docs>
+    <code>
+      - path: app/api/vendor-whatsapp (to add)
+        kind: api
+        symbol: CRUD endpoints
+        lines: n/a
+        reason: Manage WhatsApp vendor entries
+      - path: app/vendors/whatsapp (to add)
+        kind: page
+        symbol: WhatsAppVendorsPage
+        lines: n/a
+        reason: UI for WhatsApp entries and uploads
+    </code>
+    <dependencies>
+      - runtime: next@15, react@18
+      - styling/ui: tailwindcss, shadcn/ui
+      - testing: jest, @testing-library/react
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Keep data normalized and use object storage for images
+    - REST envelope { data, error }; feature-first structure
+  </constraints>
+  <interfaces>
+    - name: ListWhatsAppVendors
+      kind: REST endpoint
+      signature: GET /api/vendor-whatsapp
+    - name: CreateWhatsAppVendor
+      kind: REST endpoint
+      signature: POST /api/vendor-whatsapp
+    - name: UpdateWhatsAppVendor
+      kind: REST endpoint
+      signature: PATCH /api/vendor-whatsapp/:id
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock fetch/upload; act-wrapped interactions.</standards>
+    <locations>__tests__/app/vendors, __tests__/app/api.</locations>
+    <ideas>
+      - Create entry API called on form submit
+      - Upload path invoked (mocked)
+      - Status updates persist via PATCH mock
+    </ideas>
+  </tests>
+</story-context>

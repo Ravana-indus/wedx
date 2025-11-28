@@ -1,0 +1,120 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>4</storyId>
+    <title>Story 3.4 – Implement Checklist Collaboration and Assignments (Basics)</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-3-4-implement-checklist-collaboration-and-assignments-basics.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple and families</asA>
+    <iWant>to assign checklist items to specific people and filter by assignee</iWant>
+    <soThat>ownership is clear and collaboration is easy</soThat>
+    <tasks>
+      - Add participant model and API for wedding participants
+      - Extend checklist items with assigneeId/assigneeRole fields and persist them
+      - Update checklist APIs to return and allow updating assignee fields
+      - Enhance /checklist UI to show assignee chips and allow editing via dropdown
+      - Add assignee filters (all, unassigned, participant, me) with URL presets
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Participants exist per wedding; GET /api/weddings/:id/participants returns them
+    - ChecklistItem supports assigneeId and assigneeRole; data persists
+    - PATCH /api/checklist-items/:id updates assignee fields; GET returns them
+    - /checklist shows assignee or Unassigned and allows changing via UI
+    - Assignee filtering works, including URL preset (e.g., ?assignee=me or ?assigneeId=...)
+    - UI uses wedX design system and remains simple for couples/parents
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document: Wedding & Events OS (Sri Lanka)
+        section: Collaboration rationale
+        snippet: "Make ownership clear to reduce missed tasks and duplicated work; parents included."
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: Data Architecture / Entities
+        snippet: "ChecklistItems and participants; REST JSON { data, error }; feature-first structure."
+      - path: docs/ux-design-specification.md
+        title: wedX UX Design Specification
+        section: Collaboration principles
+        snippet: "Make it obvious who owns each task; easy reassignment; parents feel included."
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 3 Story 3.4
+        snippet: "Basic assignment of checklist items to people; visible ownership."
+      - path: docs/sprint-artifacts/story-3-3-implement-jewelry-checklists-and-tracking.md
+        title: Story 3.3 – Implement Jewelry Checklists and Tracking
+        section: Context
+        snippet: "Checklist UI supports filters; jewelry metadata may need ownership alignment."
+    </docs>
+    <code>
+      - path: lib/checklists/types.ts
+        kind: types
+        symbol: ChecklistItem
+        lines: 1-160
+        reason: Add assigneeId/assigneeRole fields
+      - path: lib/checklists/generator.ts
+        kind: service
+        symbol: generateChecklist
+        lines: 1-160
+        reason: Default assignee data (likely null) propagation
+      - path: app/api/weddings/[id]/checklists/route.ts
+        kind: api
+        symbol: GET checklist
+        lines: 1-40
+        reason: Ensure assignee fields returned
+      - path: app/api/checklist-items/[id]/route.ts
+        kind: api
+        symbol: PATCH checklist item
+        lines: 1-100
+        reason: Allow assignee updates
+      - path: app/checklist/page.tsx
+        kind: page
+        symbol: ChecklistPage
+        lines: 1-420
+        reason: Add assignee chips, dropdown edits, filters, URL preset
+    </code>
+    <dependencies>
+      - runtime: next@15, react@18
+      - styling/ui: tailwindcss, shadcn/ui (card, select, badge, dropdown)
+      - testing: jest, @testing-library/react, user-event
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Keep REST envelope { data, error }; App Router; feature-first structure
+    - Simple participant model (no invite flow yet); assignment UI must stay approachable
+    - Reuse existing checklist filters/patterns; add assignee filter without clutter
+  </constraints>
+  <interfaces>
+    - name: GetParticipants
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/participants → { participants }
+      path: app/api/weddings/[id]/participants/route.ts (to add)
+    - name: UpdateChecklistItem
+      kind: REST endpoint
+      signature: PATCH /api/checklist-items/:id → updates assigneeId/assigneeRole (+existing fields)
+      path: app/api/checklist-items/[id]/route.ts
+    - name: GetChecklist
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/checklists → items with assigneeId/assigneeRole
+      path: app/api/weddings/[id]/checklists/route.ts
+  </interfaces>
+  <tests>
+    <standards>Jest + RTL; mock APIs; act-wrapped interactions as needed.</standards>
+    <locations>__tests__/app/checklist, __tests__/lib/api, __tests__/app/api.</locations>
+    <ideas>
+      - Generator/API returns assignee fields (null by default)
+      - PATCH updates assignee fields
+      - UI shows assignee chips and updates after selection
+      - Assignee filter selects only matching items; URL preset initializes filter
+    </ideas>
+  </tests>
+</story-context>
