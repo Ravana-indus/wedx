@@ -191,6 +191,7 @@ export default function RitualsConfigurationStepPage() {
   const [loading, setLoading] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const hasLoadedInitial = React.useRef(false);
 
   React.useEffect(() => {
     let isMounted = true;
@@ -214,17 +215,21 @@ export default function RitualsConfigurationStepPage() {
 
         if (!isMounted) return;
         setRitualsByEvent(initial);
+        hasLoadedInitial.current = true;
       } catch (e) {
         if (!isMounted) return;
         setError(
-          "We couldn’t load your rituals. You can still configure them and continue."
+          "We couldn't load your rituals. You can still configure them and continue."
         );
       } finally {
         if (isMounted) setLoading(false);
       }
     }
 
-    loadInitial();
+    // Only load initial data if we haven't loaded it yet
+    if (!hasLoadedInitial.current && events.length > 0) {
+      loadInitial();
+    }
     return () => {
       isMounted = false;
     };

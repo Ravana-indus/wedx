@@ -41,41 +41,41 @@ development_status:
   1-3-configure-authentication-shell-placeholder: done
   epic-1-retrospective: optional
 
-  epic-2: in-progress
-  2-1-implement-step-1-wedding-type-selection: done
-  2-2-implement-step-2-multi-event-setup: done
-  2-3-implement-step-3-vibe-theme-capture: done
-  2-4-implement-step-4-rituals-configuration: done
-  2-5-implement-step-5-budget-management-collaborators: done
+  epic-2: review
+  2-1-implement-step-1-wedding-type-selection: review
+  2-2-implement-step-2-multi-event-setup: review
+  2-3-implement-step-3-vibe-theme-capture: review
+  2-4-implement-step-4-rituals-configuration: review
+  2-5-implement-step-5-budget-management-collaborators: review
   2-6-today-dashboard-initial-control-room: done
   epic-2-retrospective: optional
 
   epic-3: in-progress
   3-1-implement-core-checklist-engine-and-data-model: done
-  3-2-implement-checklist-ui-and-filtering: review
+  3-2-implement-checklist-ui-and-filtering: done
   3-3-implement-jewelry-checklists-and-tracking: done
-  3-4-implement-checklist-collaboration-and-assignments-basics: review
+  3-4-implement-checklist-collaboration-and-assignments-basics: done
   epic-3-retrospective: optional
 
   epic-4: in-progress
-  4-1-partner-vendor-listing-shortlist: review
-  4-2-my-vendors-partner-flows: in-progress
-  4-3-whatsapp-vendors-screenshot-logging: review
+  4-1-partner-vendor-listing-shortlist: done
+  4-2-my-vendors-partner-flows: done
+  4-3-whatsapp-vendors-screenshot-logging: done
   epic-4-retrospective: optional
 
-  epic-5: backlog
-  5-1-guest-list-table-import: review
-  5-2-rsvp-tracking: ready-for-dev
-  5-3-basic-seating-assignment: ready-for-dev
+  epic-5: in-progress
+  5-1-guest-list-table-import: done
+  5-2-rsvp-tracking: done
+  5-3-basic-seating-assignment: done
   epic-5-retrospective: optional
 
-  epic-6: backlog
-  6-1-budget-summary-view: backlog
-  6-2-budget-lines-transactions: backlog
+  epic-6: in-progress
+  6-1-budget-summary-view: done
+  6-2-budget-lines-transactions: done
   epic-6-retrospective: optional
 
-  epic-7: backlog
-  7-1-ai-planner-chat-surface: backlog
-  7-2-ritual-based-task-generation: backlog
-  7-3-conflict-detection-time-vendor: backlog
+  epic-7: review
+  7-1-ai-planner-chat-surface: review
+  7-2-ai-planner-ui-today-dashboard: done
+  7-3-ritual-based-task-generation: review
   epic-7-retrospective: optional

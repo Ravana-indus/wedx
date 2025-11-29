@@ -1,0 +1,125 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>6</epicId>
+    <storyId>1</storyId>
+    <title>Story 6.1 – Implement Budget Entities and Linking to Events and Vendors</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-29</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/story-6-1-implement-budget-entities-and-linking-to-events-and-vendors.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>Couple</asA>
+    <iWant>A structured way to track our wedding budget, actual spend, and links to events and vendors</iWant>
+    <soThat>We can see where our money is going and avoid overspending</soThat>
+    <tasks>
+      - Define budget data model with BudgetCategory and BudgetLineItem entities
+      - Implement backend APIs for budget categories and line items management
+      - Create linking between budget items and events/vendors
+      - Build minimal budget view with line items table
+      - Seed default budget categories (venue, catering, decor, etc.)
+      - Implement CRUD operations for budget line items
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    - Budget data model implemented: budget_categories and budget_line_items tables with proper relationships
+    - Budget categories API works: GET /api/weddings/:id/budget/categories returns seeded categories
+    - Budget line items API works: GET /api/weddings/:id/budget/line-items returns items with category, event, and vendor info
+    - Create budget line item works: POST /api/weddings/:id/budget/line-items creates new line item
+    - Update budget line item works: PATCH /api/budget/line-items/:lineItemId updates existing item
+    - Budget UI exists: /budget page shows line items table with add/edit functionality
+    - Event and vendor linking: Line items can link to events and vendors, visible in UI
+    - Technical quality: Follows Next.js App Router, TypeScript, Tailwind, shadcn/ui patterns
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      - path: docs/prd.md
+        title: Product Requirements Document: Wedding & Events OS (Sri Lanka)
+        section: 4.4 Budget & Payments Overview
+        snippet: "Budget is a top anxiety driver for couples and parents: multiple events, many vendors, hidden costs (taxes, service charges, overtime)."
+      - path: docs/prd.md
+        section: FR-009 Budget & Payments Overview
+        snippet: "Provide a budget model that links to events and vendors, tracks planned vs actual amounts, supports categories (venue, catering, decor, etc.)."
+      - path: docs/architecture.md
+        title: wedX Decision Architecture
+        section: Data Architecture (High-Level)
+        snippet: "Budget categories and budget line items tables carry wedding/event/vendor links, planned vs actual amounts, currency support."
+      - path: docs/ux-design-specification.md
+        title: wedX UX Design Specification
+        section: Budget UX Principles
+        snippet: "High-level first, details later - show summary before line-item complexity. Parents can understand it - clear categories and totals."
+      - path: docs/epics.md
+        title: wedX - Epic Breakdown
+        section: Epic 6 – Budget & Payments Overview
+        snippet: "Epic 6 introduces budget entities, links to events and vendors, later: payments, installments, and alerts."
+    </docs>
+    <code>
+      - path: app/budget/page.tsx
+        kind: page
+        symbol: BudgetPage
+        lines: 1-50
+        reason: Budget overview page stub that needs implementation with line items table
+      - path: components/layout/sidebar-nav.tsx
+        kind: navigation
+        symbol: SidebarNav
+        lines: 1-64
+        reason: Primary nav should include Budget route; dictates shell integration
+      - path: app/(app)/budget/page.tsx
+        kind: page
+        symbol: BudgetPage
+        lines: 1-15
+        reason: App Router budget route stub noting budget shell integration
+    </code>
+    <dependencies>
+      - runtime: next@15.0.3, react@18.2.0, react-dom@18.2.0
+      - styling: tailwindcss@3.4.18, tailwindcss-animate@1.0.7, class-variance-authority, clsx
+      - ui: @radix-ui/react-dialog, @radix-ui/react-tabs, @radix-ui/react-toast, @radix-ui/react-slot, lucide-react
+      - tooling: typescript@5.2.2, eslint-config-next@15.0.3
+      - testing: jest@29.7.0 with jest-environment-jsdom, @testing-library/react, @testing-library/jest-dom, @testing-library/user-event
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    - Follow architecture patterns: feature-first structure (app/, components/, lib/), App Router, REST JSON responses shaped as { data, error }
+    - Naming rules: endpoints plural kebab-case, DB snake_case foreign keys (_id), React components PascalCase, files kebab-case
+    - Keep domain logic in lib/ modules; route handlers thin
+    - Use TypeScript types shared across handlers and UI; dates as ISO strings at API boundary
+    - Support currency handling with single currency per wedding
+    - Budget categories should be seeded with sensible defaults
+  </constraints>
+  <interfaces>
+    - name: GetBudgetCategories
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/budget/categories → returns budget categories for wedding
+      path: app/api/weddings/[id]/budget/categories/route.ts (to be added)
+    - name: GetBudgetLineItems
+      kind: REST endpoint
+      signature: GET /api/weddings/:id/budget/line-items → returns line items with category, event, vendor data
+      path: app/api/weddings/[id]/budget/line-items/route.ts (to be added)
+    - name: CreateBudgetLineItem
+      kind: REST endpoint
+      signature: POST /api/weddings/:id/budget/line-items → creates new budget line item
+      path: app/api/weddings/[id]/budget/line-items/route.ts (to be added)
+    - name: UpdateBudgetLineItem
+      kind: REST endpoint
+      signature: PATCH /api/budget/line-items/:lineItemId → updates existing budget line item
+      path: app/api/budget/line-items/[id]/route.ts (to be added)
+  </interfaces>
+  <tests>
+    <standards>Jest with next/jest config and jsdom; React Testing Library + user-event; setupFilesAfterEnv=jest.setup.js; prefer feature-aligned tests with coverage for UI and route handlers.</standards>
+    <locations>__tests__/, alongside feature files for new handlers/components.</locations>
+    <ideas>
+      - AC1: Budget categories table exists with proper schema and seeded defaults
+      - AC2: Budget line items table exists with links to wedding, category, optional event/vendor
+      - AC3: GET /api/weddings/:id/budget/categories returns all categories for wedding
+      - AC4: GET /api/weddings/:id/budget/line-items returns items with populated category, event, vendor data
+      - AC5: POST /api/weddings/:id/budget/line-items creates new line item with proper validation
+      - AC6: PATCH /api/budget/line-items/:id updates line item fields correctly
+      - AC7: Budget page displays line items table with add/edit functionality
+      - AC8: Event and vendor columns show names and link to respective pages
+    </ideas>
+  </tests>
+</story-context>

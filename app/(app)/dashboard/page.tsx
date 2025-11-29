@@ -280,6 +280,64 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Planner Card */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">AI Planner</CardTitle>
+              <CardDescription className="text-sm">
+                Get personalized suggestions for your wedding planning based on your current progress.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 rounded-md border bg-blue-50 px-3 py-2 text-blue-800">
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[0.7rem] font-semibold text-white">
+                    ✨
+                  </span>
+                  <div>
+                    <div className="font-medium">Ready to help</div>
+                    <p className="text-xs text-blue-900/80">
+                      Ask about checklists, vendors, budget, or any wedding planning questions.
+                    </p>
+                  </div>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Quick suggestions based on your wedding setup:
+                </div>
+                <ul className="space-y-1 text-xs">
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full border bg-background text-center text-[0.6rem] leading-4 text-muted-foreground">
+                      ?
+                    </span>
+                    <span>What should we focus on this week?</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full border bg-background text-center text-[0.6rem] leading-4 text-muted-foreground">
+                      ?
+                    </span>
+                    <span>Which vendors should we book next?</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full border bg-background text-center text-[0.6rem] leading-4 text-muted-foreground">
+                      ?
+                    </span>
+                    <span>Are there any budget concerns?</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-1 text-xs">
+                <Link
+                  href="/ai"
+                  className="font-medium text-wedx-primary-700 underline-offset-2 hover:underline"
+                >
+                  Open AI Planner
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-generated: "2025-11-25"
+generated: "2025-11-29"
 project: "wedX"
 project_type: "software"
 project_level: 1
@@ -11,10 +11,10 @@ workflow_status:
   product-brief: skipped
   prd: docs/prd.md
   validate-prd: docs/validation-report-2025-11-25.md
-  create-design: conditional
+  create-design: docs/ux-design-specification.md
   create-architecture: docs/architecture.md
   create-epics-and-stories: docs/epics.md
-  test-design: recommended
-  validate-architecture: optional
+  test-design: docs/test-design-system.md
+  validate-architecture: docs/validation-report-architecture-2025-11-25.md
   implementation-readiness: docs/implementation-readiness-report-2025-11-25.md
-  sprint-planning: required
+  sprint-planning: docs/sprint-artifacts/sprint-status.yaml

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story-context>
+  <metadata>
+    <story-id>6-2-implement-budget-overview-and-per-event-breakdown-ui</story-id>
+    <epic>Epic 6 - Budget & Payments Overview</epic>
+    <status>ready-for-dev</status>
+    <created>2025-11-29</created>
+    <dependencies>
+      <dependency>6-1-implement-budget-entities-and-linking-to-events-and-vendors</dependency>
+      <dependency>2-2-implement-step-2-multi-event-setup</dependency>
+      <dependency>4-1-implement-vendor-directory-and-basic-linking</dependency>
+    </dependencies>
+  </metadata>
+
+  <technical-requirements>
+    <backend>
+      <api-endpoints>
+        <endpoint>
+          <method>GET</method>
+          <path>/api/weddings/:id/budget/overview</path>
+          <description>Aggregated budget overview with totals, per-event and per-category breakdowns</description>
+          <response-type>BudgetOverviewResponse</response-type>
+          <implementation-notes>
+            - Aggregate BudgetLineItem data by event and category
+            - Handle null eventId for global/non-event-specific items
+            - Return currency, totals, byCategory array, and byEvent array
+          </implementation-notes>
+        </endpoint>
+      </api-endpoints>
+
+      <data-models>
+        <model>
+          <name>BudgetOverviewResponse</name>
+          <fields>
+            <field>
+              <name>currency</name>
+              <type>string</type>
+              <description>Currency code for all amounts</description>
+            </field>
+            <field>
+              <name>totals</name>
+              <type>object</type>
+              <fields>
+                <field>
+                  <name>planned</name>
+                  <type>number</type>
+                </field>
+                <field>
+                  <name>actual</name>
+                  <type>number</type>
+                </field>
+              </fields>
+            </field>
+            <field>
+              <name>byCategory</name>
+              <type>array</type>
+              <item-type>CategoryBreakdown</item-type>
+            </field>
+            <field>
+              <name>byEvent</name>
+              <type>array</type>
+              <item-type>EventBreakdown</item-type>
+            </field>
+          </fields>
+        </model>
+
+        <model>
+          <name>CategoryBreakdown</name>
+          <fields>
+            <field>
+              <name>categoryId</name>
+              <type>string</type>
+            </field>
+            <field>
+              <name>categoryName</name>
+              <type>string</type>
+            </field>
+            <field>
+              <name>planned</name>
+              <type>number</type>
+            </field>
+            <field>
+              <name>actual</name>
+              <type>number</type>
+            </field>
+          </fields>
+        </model>
+
+        <model>
+          <name>EventBreakdown</name>
+          <fields>
+            <field>
+              <name>eventId</name>
+              <type>string | null</type>
+              <description>null for global/non-event-specific items</description>
+            </field>
+            <field>
+              <name>eventName</name>
+              <type>string</type>
+            </field>
+            <field>
+              <name>planned</name>
+              <type>number</type>
+            </field>
+            <field>
+              <name>actual</name>
+              <type>number</type>
+            </field>
+          </fields>
+        </model>
+      </data-models>
+    </backend>
+
+    <frontend>
+      <pages>
+        <page>
+          <path>/budget</path>
+          <description>Enhanced budget overview page with summary cards, breakdowns, and interactive filtering</description>
+          <components>
+            <component>SummaryCards</component>
+            <component>PerEventBreakdown</component>
+            <component>PerCategoryBreakdown</component>
+            <component>LineItemsTable</component>
+          </components>
+          <features>
+            <feature>Summary cards showing total planned, actual, and difference</feature>
+            <feature>Per-event breakdown table with click-to-filter functionality</feature>
+            <feature>Per-category breakdown table with click-to-filter functionality</feature>
+            <feature>Enhanced line items table with event/category/vendor filters</feature>
+            <feature>Interactive filtering between breakdown sections and table</feature>
+          </features>
+        </page>
+
+        <page>
+          <path>/events/[eventId]</path>
+          <description>Event detail page with budget snippet section</description>
+          <components>
+            <component>BudgetSnippet</component>
+          </components>
+          <features>
+            <feature>Show planned total, actual total, and difference for the event</feature>
+            <feature>Link to budget overview pre-filtered for this event</feature>
+          </features>
+        </page>
+      </pages>
+
+      <components>
+        <component>
+          <name>SummaryCards</name>
+          <description>Three summary cards showing overall budget metrics</description>
+          <props>
+            <prop>
+              <name>totals</name>
+              <type>BudgetTotals</type>
+            </prop>
+          </props>
+          <styling>
+            - Use shadcn Card components
+            - Planned: neutral color
+            - Actual: neutral color  
+            - Difference: warning color if significantly over budget
+          </styling>
+        </component>
+
+        <component>
+          <name>PerEventBreakdown</name>
+          <description>Table showing budget breakdown by event</description>
+          <props>
+            <prop>
+              <name>byEvent</name>
+              <type>EventBreakdown[]</type>
+            </prop>
+            <prop>
+              <name>onEventClick</name>
+              <type>function</type>
+            </prop>
+          </props>
+          <columns>
+            <column>Event name (or "Global / Not tied to event")</column>
+            <column>Planned amount</column>
+            <column>Actual amount</column>
+            <column>Difference</column>
+          </columns>
+        </component>
+
+        <component>
+          <name>PerCategoryBreakdown</name>
+          <description>Table showing budget breakdown by category</description>
+          <props>
+            <prop>
+              <name>byCategory</name>
+              <type>CategoryBreakdown[]</type>
+            </prop>
+            <prop>
+              <name>onCategoryClick</name>
+              <type>function</type>
+            </prop>
+          </props>
+          <columns>
+            <column>Category name</column>
+            <column>Planned amount</column>
+            <column>Actual amount</column>
+            <column>Difference</column>
+          </columns>
+        </component>
+
+        <component>
+          <name>BudgetSnippet</name>
+          <description>Compact budget summary for event detail pages</description>
+          <props>
+            <prop>
+              <name>eventId</name>
+              <type>string</type>
+            </prop>
+            <prop>
+              <name>budgetData</name>
+              <type>EventBreakdown</type>
+            </prop>
+          </props>
+          <features>
+            <feature>Display planned, actual, and difference for the event</feature>
+            <feature>Link to budget overview with event pre-filter</feature>
+          </features>
+        </component>
+      </components>
+
+      <state-management>
+        <requirement>
+          <description>Manage filter state for line items table</description>
+          <implementation>
+            - Use React useState for filter state
+            - Store active filters: eventId, categoryId, vendorId
+            - Update table data when filters change
+          </implementation>
+        </requirement>
+      </state-management>
+    </frontend>
+
+    <testing>
+      <test-cases>
+        <test-case>
+          <description>Budget overview API returns correct aggregations</description>
+          <steps>
+            <step>Create test budget line items with various events and categories</step>
+            <step>Call GET /api/weddings/:id/budget/overview</step>
+            <step>Verify totals, byCategory, and byEvent calculations</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>Budget page displays all sections correctly</description>
+          <steps>
+            <step>Navigate to /budget</step>
+            <step>Verify summary cards show correct totals</step>
+            <step>Verify per-event breakdown table</step>
+            <step>Verify per-category breakdown table</step>
+            <step>Verify line items table with filters</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>Interactive filtering works between sections</description>
+          <steps>
+            <step>Click event row in per-event breakdown</step>
+            <step>Verify line items table filters to show only that event</step>
+            <step>Click category row in per-category breakdown</step>
+            <step>Verify line items table filters to show only that category</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>Event detail page shows budget snippet</description>
+          <steps>
+            <step>Navigate to /events/[eventId]</step>
+            <step>Verify budget snippet shows correct event totals</step>
+            <step>Click "View full budget" link</step>
+            <step>Verify navigation to /budget with event pre-filtered</step>
+          </steps>
+        </test-case>
+      </test-cases>
+    </testing>
+  </technical-requirements>
+
+  <implementation-notes>
+    <note>
+      <category>performance</category>
+      <content>Backend aggregation is preferred over frontend for better performance with large datasets</content>
+    </note>
+    <note>
+      <category>ux</category>
+      <content>Use neutral, supportive language and colors - avoid shaming language for overspending</content>
+    </note>
+    <note>
+      <category>filtering</category>
+      <content>Implement filter state management to allow multiple active filters simultaneously</content>
+    </note>
+    <note>
+      <category>navigation</category>
+      <content>Support URL parameters for pre-filtered budget views (e.g., /budget?eventId=123)</content>
+    </note>
+  </implementation-notes>
+
+  <acceptance-criteria>
+    <criterion id="1">
+      <description>Budget aggregations implemented and tested</description>
+      <verification>API endpoint returns correct totals, per-event, and per-category breakdowns</verification>
+    </criterion>
+    <criterion id="2">
+      <description>Budget overview page complete</description>
+      <verification>All sections present: summary cards, per-event breakdown, per-category breakdown, line items table</verification>
+    </criterion>
+    <criterion id="3">
+      <description>Interactive filtering functional</description>
+      <verification>Clicking event/category rows filters line items table accordingly</verification>
+    </criterion>
+    <criterion id="4">
+      <description>Event detail integration</description>
+      <verification>Budget snippet shows on event pages with link to pre-filtered budget view</verification>
+    </criterion>
+    <criterion id="5">
+      <description>UX compliance</description>
+      <verification>Uses wedX design system, simple and readable, neutral supportive language</verification>
+    </criterion>
+  </acceptance-criteria>
+</story-context>

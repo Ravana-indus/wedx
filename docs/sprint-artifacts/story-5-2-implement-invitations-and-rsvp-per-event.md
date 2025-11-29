@@ -1,5 +1,5 @@
 # Story 5.2 – Implement Invitations and RSVP per Event
-Status: ready-for-dev
+Status: review
 
 ## 1. Story Summary
 
@@ -420,7 +420,27 @@ Story 5.2 is **Done** when:
 #### Context Reference
 - docs/sprint-artifacts/5-2-rsvp-tracking.context.xml
 
+#### Debug Log
+- Added invitation model/store and REST endpoints: list/create bulk per event, update single, RSVP summary.
+- Built /guests/invitations UI with event selector, guest/household add, inline status/count edits, and RSVP summary; linked event detail page summary.
+- Client helpers for invitations; tests for store and UI added; full suite passing (React act warnings persist).
+
+#### Completion Notes
+- RSVP foundations delivered: invitations per event with statuses/counts, summary endpoint, management UI, and event detail summary link.
+- Tests: `npm test -- --runInBand` (pass; existing act warnings remain).
+
 #### File List
 - docs/sprint-artifacts/story-5-2-implement-invitations-and-rsvp-per-event.md
 - docs/sprint-artifacts/sprint-status.yaml
 - docs/sprint-artifacts/5-2-rsvp-tracking.context.xml
+- lib/invitations/types.ts
+- lib/invitations/store.ts
+- lib/api/invitations.ts
+- app/api/events/[eventId]/invitations/route.ts
+- app/api/invitations/[id]/route.ts
+- app/api/events/[eventId]/rsvp-summary/route.ts
+- app/guests/invitations/page.tsx
+- app/events/[eventId]/rsvp-summary.tsx
+- app/events/[eventId]/page.tsx
+- __tests__/lib/invitations/store.test.ts
+- __tests__/app/guests/invitations/page.test.tsx

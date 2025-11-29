@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getEventById } from "../page";
+import { getEventById } from "@/lib/events/data";
 import VendorsForEvent from "./vendors-for-event";
 import {
   Card,
@@ -9,6 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import RsvpSummary from "./rsvp-summary";
+import SeatingSummary from "./seating-summary";
+import EventBudgetSnippet from "@/components/budget/event-budget-snippet";
 
 interface EventDetailPageProps {
   params: {
@@ -143,6 +146,58 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             >
               Open checklist hub
             </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="border-dashed">
+          <CardHeader>
+            <CardTitle className="text-sm">RSVP summary</CardTitle>
+            <CardDescription className="text-xs">
+              Invited vs attending for this event.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-xs text-muted-foreground space-y-2">
+            <RsvpSummary eventId={event?.id ?? ""} />
+            <Link
+              href="/guests/invitations"
+              className="text-xs font-medium text-wedx-primary-700 underline-offset-2 hover:underline"
+            >
+              Manage invitations
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="border-dashed">
+          <CardHeader>
+            <CardTitle className="text-sm">Event budget</CardTitle>
+            <CardDescription className="text-xs">
+              Planned vs actual spending for this event.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-xs text-muted-foreground space-y-2">
+            <EventBudgetSnippet
+              weddingId="mock-wedding-id"
+              eventId={event?.id ?? ""}
+              eventName={event?.name ?? "Event"}
+            />
+            <Link
+              href="/budget"
+              className="text-xs font-medium text-wedx-primary-700 underline-offset-2 hover:underline"
+            >
+              View full budget
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="border-dashed">
+          <CardHeader>
+            <CardTitle className="text-sm">Seating summary</CardTitle>
+            <CardDescription className="text-xs">
+              Table assignments and capacity for this event.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-xs text-muted-foreground space-y-2">
+            <SeatingSummary eventId={event?.id ?? ""} />
           </CardContent>
         </Card>
       </div>

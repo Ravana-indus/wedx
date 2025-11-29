@@ -1,0 +1,196 @@
+<context>
+  <id>7-3-implement-ritual-based-task-generation-and-conflict-detection</id>
+  <title>Story 7.3: Ritual-Based Task Generation and Conflict Detection</title>
+  <description>Implement intelligent task generation based on wedding rituals and ceremonies, along with conflict detection for timing and vendor scheduling to help couples avoid common planning pitfalls.</description>
+  
+  <requirements>
+    <requirement id="7.3.1" priority="high">
+      <description>Create ritual-based task generation system</description>
+      <acceptance-criteria>
+        <criterion>Tasks automatically generated based on configured rituals and ceremonies</criterion>
+        <criterion>Tasks include appropriate timing recommendations (e.g., "Book Poruwa 3 months before ceremony")</criterion>
+        <criterion>Tasks categorized by ritual type and priority</criterion>
+        <criterion>Integration with existing checklist system</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.3.2" priority="high">
+      <description>Implement timing conflict detection</description>
+      <acceptance-criteria>
+        <criterion>Detect overlapping events or ceremonies</criterion>
+        <criterion>Identify insufficient time between related events</criterion>
+        <criterion>Warn about culturally inappropriate timing (e.g., auspicious dates)</criterion>
+        <criterion>Provide suggestions for resolving timing conflicts</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.3.3" priority="high">
+      <description>Implement vendor conflict detection</description>
+      <acceptance-criteria>
+        <criterion>Detect vendor double-booking across events</criterion>
+        <criterion>Identify vendor availability conflicts</criterion>
+        <criterion>Check for vendor category conflicts (e.g., same vendor for competing services)</criterion>
+        <criterion>Provide alternative vendor suggestions</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.3.4" priority="medium">
+      <description>Create conflict resolution UI</description>
+      <acceptance-criteria>
+        <criterion>Visual indicators for conflicts in calendar and vendor views</criterion>
+        <criterion>Detailed conflict explanation cards</criterion>
+        <criterion>One-click resolution options where appropriate</criterion>
+        <criterion>Conflict severity indicators (warning, critical)</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.3.5" priority="medium">
+      <description>Integrate with AI Planner for proactive suggestions</description>
+      <acceptance-criteria>
+        <criterion>AI Planner suggests conflict resolution strategies</criterion>
+        <criterion>Proactive warnings about potential conflicts</criterion>
+        <criterion>Contextual advice based on wedding type and rituals</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.3.6" priority="medium">
+      <description>Implement notification system for conflicts</description>
+      <acceptance-criteria>
+        <criterion>Real-time conflict notifications</criterion>
+        <criterion>Dashboard alerts for active conflicts</criterion>
+        <criterion>Email notifications for critical conflicts (optional)</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.3.7" priority="low">
+      <description>Create comprehensive test suite</description>
+      <acceptance-criteria>
+        <criterion>Unit tests for conflict detection algorithms</criterion>
+        <criterion>Integration tests for task generation</criterion>
+        <criterion>End-to-end tests for conflict resolution workflows</criterion>
+      </acceptance-criteria>
+    </requirement>
+  </requirements>
+  
+  <technical-specifications>
+    <specification id="7.3.1">
+      <title>Ritual Task Generation Engine</title>
+      <details>
+        <file>lib/ai/ritual-task-generator.ts</file>
+        <description>Core engine that analyzes configured rituals and generates appropriate tasks with timing recommendations</description>
+        <dependencies>Wedding rituals data, task templates, cultural timing rules</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.3.2">
+      <title>Conflict Detection Service</title>
+      <details>
+        <file>lib/ai/conflict-detector.ts</file>
+        <description>Service that analyzes events, vendors, and timing to detect potential conflicts</description>
+        <dependencies>Event data, vendor data, timing rules, conflict resolution strategies</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.3.3">
+      <title>Conflict Resolution UI Components</title>
+      <details>
+        <file>components/ai/conflict-card.tsx</file>
+        <description>Reusable components for displaying conflicts with resolution options</description>
+        <dependencies>shadcn/ui components, conflict data models</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.3.4">
+      <title>API Endpoints for Conflict Management</title>
+      <details>
+        <file>app/api/weddings/[id]/conflicts/</file>
+        <description>RESTful endpoints for conflict detection and resolution</description>
+        <dependencies>Conflict detection service, wedding data, authentication</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.3.5">
+      <title>Integration with Existing Systems</title>
+      <details>
+        <file>app/(app)/events/page.tsx</file>
+        <description>Enhanced event pages with conflict indicators and resolution tools</description>
+        <dependencies>Existing event UI, conflict detection service</dependencies>
+      </details>
+    </specification>
+  </technical-specifications>
+  
+  <implementation-notes>
+    <note priority="high">
+      <title>Cultural Sensitivity</title>
+      <content>Ensure that ritual-based task generation respects cultural traditions and provides appropriate timing recommendations. Consult with cultural experts or existing wedding planning resources to ensure accuracy.</content>
+    </note>
+    
+    <note priority="high">
+      <title>Performance Considerations</title>
+      <content>Conflict detection should be efficient and not block the UI. Consider implementing background processing or debouncing for complex conflict analysis.</content>
+    </note>
+    
+    <note priority="medium">
+      <title>User Control</title>
+      <content>Allow users to override conflict warnings and provide reasons for their decisions. Not all conflicts are critical, and user context is important.</content>
+    </note>
+    
+    <note priority="medium">
+      <title>Learning System</title>
+      <content>Consider implementing a feedback loop where users can indicate whether conflict warnings were helpful, allowing the system to improve over time.</content>
+    </note>
+  </implementation-notes>
+  
+  <dependencies>
+    <dependency id="7.1.1" type="prerequisite">
+      <description>AI Planner Chat Surface backend implementation</description>
+      <status>ready-for-dev</status>
+    </dependency>
+    
+    <dependency id="7.2.1" type="prerequisite">
+      <description>AI Planner UI implementation</description>
+      <status>done</status>
+    </dependency>
+    
+    <dependency id="2.2.1" type="existing">
+      <description>Multi-event setup system</description>
+      <status>completed</status>
+    </dependency>
+    
+    <dependency id="4.1.1" type="existing">
+      <description>Vendor management system</description>
+      <status>completed</status>
+    </dependency>
+    
+    <dependency id="3.1.1" type="existing">
+      <description>Checklist system for task integration</description>
+      <status>completed</status>
+    </dependency>
+  </dependencies>
+  
+  <testing-strategy>
+    <test-level>Unit and Integration</test-level>
+    <test-coverage>
+      <coverage-area>Conflict Detection Algorithms</coverage-area>
+      <coverage-area>Task Generation Logic</coverage-area>
+      <coverage-area>UI Components</coverage-area>
+      <coverage-area>API Integration</coverage-area>
+    </test-coverage>
+    <test-approach>
+      Test conflict detection with various scenarios (timing overlaps, vendor conflicts, cultural constraints)
+      Verify task generation produces appropriate tasks for different ritual combinations
+      Test UI components render conflicts correctly and provide resolution options
+      Ensure integration with existing systems doesn't break current functionality
+    </test-approach>
+  </testing-strategy>
+  
+  <acceptance-criteria-summary>
+    <criterion>Ritual-based tasks are automatically generated and appropriate</criterion>
+    <criterion>Timing conflicts are detected and clearly communicated</criterion>
+    <criterion>Vendor conflicts are identified with resolution suggestions</criterion>
+    <criterion>Conflict resolution UI is intuitive and helpful</criterion>
+    <criterion>Integration with AI Planner provides contextual advice</criterion>
+    <criterion>Users can override conflicts with appropriate warnings</criterion>
+    <criterion>All tests pass and system performs well</criterion>
+  </acceptance-criteria-summary>
+</context>

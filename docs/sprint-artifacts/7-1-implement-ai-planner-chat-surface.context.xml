@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<story-context>
+  <metadata>
+    <story-id>7-1-implement-ai-planner-chat-surface</story-id>
+    <epic>Epic 7 - AI Planner & Ritual Intelligence (Core)</epic>
+    <status>ready-for-dev</status>
+    <created>2025-11-29</created>
+    <dependencies>
+      <dependency>2-6-today-dashboard-initial-control-room</dependency>
+      <dependency>3-1-implement-core-checklist-engine-and-data-model</dependency>
+      <dependency>4-1-implement-vendor-directory-and-basic-linking</dependency>
+      <dependency>5-1-implement-guests-and-households-data-model-and-import</dependency>
+      <dependency>6-1-implement-budget-entities-and-linking-to-events-and-vendors</dependency>
+    </dependencies>
+  </metadata>
+
+  <technical-requirements>
+    <backend>
+      <api-endpoints>
+        <endpoint>
+          <method>POST</method>
+          <path>/api/ai/planner</path>
+          <description>AI planner chat endpoint that processes user messages and returns contextual responses</description>
+          <request-body>
+            <field>
+              <name>message</name>
+              <type>string</type>
+              <description>User's message to the AI planner</description>
+            </field>
+            <field>
+              <name>context</name>
+              <type>object</type>
+              <description>Current wedding context (events, tasks, vendors, etc.)</description>
+            </field>
+            <field>
+              <name>quickPrompt</name>
+              <type>string</type>
+              <optional>true</optional>
+              <description>Predefined quick prompt if user clicked a quick action</description>
+            </field>
+          </request-body>
+          <response-type>AIPlannerResponse</response-type>
+          <implementation-notes>
+            - Hide AI provider details behind this endpoint
+            - Process wedding context to provide relevant, contextual responses
+            - Support both free-form messages and quick prompts
+            - Return structured responses with actionable items
+          </implementation-notes>
+        </endpoint>
+
+        <endpoint>
+          <method>POST</method>
+          <path>/api/ai/planner/convert-to-task</path>
+          <description>Convert AI suggestion into a concrete task</description>
+          <request-body>
+            <field>
+              <name>suggestion</name>
+              <type>object</type>
+              <description>AI suggestion to convert</description>
+            </field>
+            <field>
+              <name>categoryId</name>
+              <type>string</type>
+              <optional>true</optional>
+              <description>Target checklist category</description>
+            </field>
+            <field>
+              <name>eventId</name>
+              <type>string</type>
+              <optional>true</optional>
+              <description>Target event if applicable</description>
+            </field>
+          </request-body>
+          <response-type>Task</response-type>
+        </endpoint>
+      </api-endpoints>
+
+      <data-models>
+        <model>
+          <name>AIPlannerResponse</name>
+          <fields>
+            <field>
+              <name>response</name>
+              <type>string</type>
+              <description>Natural language response from AI</description>
+            </field>
+            <field>
+              <name>suggestions</name>
+              <type>array</type>
+              <item-type>AISuggestion</item-type>
+              <description>Actionable suggestions that can be converted to tasks</description>
+            </field>
+            <field>
+              <name>referencedEntities</name>
+              <type>array</type>
+              <item-type>ReferencedEntity</item-type>
+              <description>Existing entities (events, tasks, vendors) referenced in the response</description>
+            </field>
+            <field>
+              <name>quickPrompts</name>
+              <type>array</type>
+              <item-type>QuickPrompt</item-type>
+              <description>Suggested follow-up quick prompts</description>
+            </field>
+          </fields>
+        </model>
+
+        <model>
+          <name>AISuggestion</name>
+          <fields>
+            <field>
+              <name>id</name>
+              <type>string</type>
+              <description>Unique identifier for the suggestion</description>
+            </field>
+            <field>
+              <name>title</name>
+              <type>string</type>
+              <description>Short title of the suggestion</description>
+            </field>
+            <field>
+              <name>description</name>
+              <type>string</type>
+              <description>Detailed description</description>
+            </field>
+            <field>
+              <name>category</name>
+              <type>string</type>
+              <description>Suggested category (e.g., "Venue", "Catering", "Logistics")</description>
+            </field>
+            <field>
+              <name>priority</name>
+              <type>string</type>
+              <description>Priority level (High, Medium, Low)</description>
+            </field>
+            <field>
+              <name>dueDateSuggestion</name>
+              <type>string</type>
+              <optional>true</optional>
+              <description>Suggested due date or timeframe</description>
+            </field>
+          </fields>
+        </model>
+
+        <model>
+          <name>ReferencedEntity</name>
+          <fields>
+            <field>
+              <name>type</name>
+              <type>string</type>
+              <description>Entity type (event, task, vendor, guest, etc.)</description>
+            </field>
+            <field>
+              <name>id</name>
+              <type>string</type>
+              <description>Entity ID</description>
+            </field>
+            <field>
+              <name>name</name>
+              <type>string</type>
+              <description>Entity name/title</description>
+            </field>
+            <field>
+              <name>context</name>
+              <type>string</type>
+              <description>How this entity is relevant to the conversation</description>
+            </field>
+          </fields>
+        </model>
+
+        <model>
+          <name>QuickPrompt</name>
+          <fields>
+            <field>
+              <name>id</name>
+              <type>string</type>
+              <description>Unique identifier</description>
+            </field>
+            <field>
+              <name>label</name>
+              <type>string</type>
+              <description>Display label for the quick prompt</description>
+            </field>
+            <field>
+              <name>prompt</name>
+              <type>string</type>
+              <description>Actual prompt text sent to AI</description>
+            </field>
+            <field>
+              <name>icon</name>
+              <type>string</type>
+              <optional>true</optional>
+              <description>Icon identifier for UI</description>
+            </field>
+          </fields>
+        </model>
+      </data-models>
+    </backend>
+
+    <frontend>
+      <pages>
+        <page>
+          <path>/ai</path>
+          <description>AI Planner chat interface with conversational AI capabilities</description>
+          <components>
+            <component>ChatInterface</component>
+            <component>QuickPrompts</component>
+            <component>SuggestionCards</component>
+            <component>EntityReferences</component>
+          </components>
+          <features>
+            <feature>Conversational chat interface with message history</feature>
+            <feature>Quick prompt buttons for common queries</feature>
+            <feature>Convert AI suggestions to tasks with one click</feature>
+            <feature>Reference existing entities in responses</feature>
+            <feature>Maintain conversation context across sessions</feature>
+          </features>
+        </page>
+      </pages>
+
+      <components>
+        <component>
+          <name>ChatInterface</name>
+          <description>Main chat interface component for AI conversations</description>
+          <props>
+            <prop>
+              <name>messages</name>
+              <type>Message[]</type>
+              <description>Array of chat messages</description>
+            </prop>
+            <prop>
+              <name>onSendMessage</name>
+              <type>function</type>
+              <description>Callback when user sends a message</description>
+            </prop>
+            <prop>
+              <name>onQuickPrompt</name>
+              <type>function</type>
+              <description>Callback when user clicks a quick prompt</description>
+            </prop>
+          </props>
+          <features>
+            <feature>Message threading and history display</feature>
+            <feature>Typing indicators</feature>
+            <feature>Markdown support for rich responses</feature>
+            <feature>Scroll to bottom on new messages</feature>
+          </features>
+        </component>
+
+        <component>
+          <name>QuickPrompts</name>
+          <description>Grid of quick action buttons for common AI queries</description>
+          <props>
+            <prop>
+              <name>prompts</name>
+              <type>QuickPrompt[]</type>
+              <description>Available quick prompts</description>
+            </prop>
+            <prop>
+              <name>onPromptClick</name>
+              <type>function</type>
+              <description>Callback when prompt is clicked</description>
+            </prop>
+          </props>
+          <default-prompts>
+            <prompt>"Plan this week"</prompt>
+            <prompt>"Help with Poruwa prep"</prompt>
+            <prompt>"What's my budget status?"</prompt>
+            <prompt>"Suggest vendors for catering"</prompt>
+            <prompt>"Check for conflicts"</prompt>
+          </default-prompts>
+        </component>
+
+        <component>
+          <name>SuggestionCards</name>
+          <description>Display AI suggestions as actionable cards</description>
+          <props>
+            <prop>
+              <name>suggestions</name>
+              <type>AISuggestion[]</type>
+              <description>AI suggestions to display</description>
+            </prop>
+            <prop>
+              <name>onConvertToTask</name>
+              <type>function</type>
+              <description>Callback to convert suggestion to task</description>
+            </prop>
+          </props>
+          <features>
+            <feature>Card-based layout for each suggestion</feature>
+            <feature>Convert to task button with category selection</feature>
+            <feature>Priority indicators</feature>
+            <feature>Expandable details view</feature>
+          </features>
+        </component>
+
+        <component>
+          <name>EntityReferences</name>
+          <description>Display referenced entities with context</description>
+          <props>
+            <prop>
+              <name>entities</name>
+              <type>ReferencedEntity[]</type>
+              <description>Referenced entities</description>
+            </prop>
+            <prop>
+              <name>onEntityClick</name>
+              <type>function</type>
+              <description>Callback when entity is clicked</description>
+            </prop>
+          </props>
+          <features>
+            <feature>Clickable entity references</feature>
+            <feature>Context explanation for each reference</feature>
+            <feature>Navigation to entity details</feature>
+          </features>
+        </component>
+      </components>
+
+      <state-management>
+        <requirement>
+          <description>Maintain chat history and conversation context</description>
+          <implementation>
+            - Use React state or context for chat messages
+            - Store conversation ID for continuity across sessions
+            - Persist quick prompts and suggestions
+          </implementation>
+        </requirement>
+      </state-management>
+    </frontend>
+
+    <testing>
+      <test-cases>
+        <test-case>
+          <description>AI Planner chat interface renders correctly</description>
+          <steps>
+            <step>Navigate to /ai</step>
+            <step>Verify chat interface displays</step>
+            <step>Verify quick prompts are visible</step>
+            <step>Verify message input is functional</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>AI responds with contextual information</description>
+          <steps>
+            <step>Send message about wedding events</step>
+            <step>Verify AI response references existing events</step>
+            <step>Verify response includes actionable suggestions</step>
+            <step>Verify quick prompts are updated</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>Convert suggestion to task</description>
+          <steps>
+            <step>Send message that generates suggestions</step>
+            <step>Click "Convert to Task" on a suggestion</step>
+            <step>Select category and event if applicable</step>
+            <step>Verify task is created in checklist</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>Quick prompts work correctly</description>
+          <steps>
+            <step>Click "Plan this week" quick prompt</step>
+            <step>Verify AI provides relevant weekly planning response</step>
+            <step>Verify suggestions are appropriate for current timeline</step>
+          </steps>
+        </test-case>
+
+        <test-case>
+          <description>Entity references are clickable</description>
+          <steps>
+            <step>Send message referencing existing vendors or events</step>
+            <step>Verify entity references appear in response</step>
+            <step>Click on entity reference</step>
+            <step>Verify navigation to entity detail page</step>
+          </steps>
+        </test-case>
+      </test-cases>
+    </testing>
+  </technical-requirements>
+
+  <implementation-notes>
+    <note>
+      <category>ai-integration</category>
+      <content>Hide AI provider details behind backend API for flexibility and security</content>
+    </note>
+    <note>
+      <category>context-awareness</category>
+      <content>AI should reference existing wedding data (events, tasks, vendors, budget) for relevant responses</content>
+    </note>
+    <note>
+      <category>user-experience</category>
+      <content>Keep chat interface simple and conversational, avoid overwhelming users with too many options</content>
+    </note>
+    <note>
+      <category>actionability</category>
+      <content>Focus on converting AI suggestions into concrete, actionable tasks within wedX</content>
+    </note>
+    <note>
+      <category>performance</category>
+      <content>Implement streaming responses for better perceived performance</content>
+    </note>
+  </implementation-notes>
+
+  <acceptance-criteria>
+    <criterion id="1">
+      <description>AI Planner chat interface available</description>
+      <verification>Navigate to /ai and see functional chat interface with quick prompts</verification>
+    </criterion>
+    <criterion id="2">
+      <description>AI provides contextual responses</description>
+      <verification>AI responses reference existing wedding entities and provide relevant suggestions</verification>
+    </criterion>
+    <criterion id="3">
+      <description>Suggestions can be converted to tasks</description>
+      <verification>Click "Convert to Task" creates actual checklist items in appropriate categories</verification>
+    </criterion>
+    <criterion id="4">
+      <description>Quick prompts functional</description>
+      <verification>Quick prompt buttons generate appropriate AI responses for common scenarios</verification>
+    </criterion>
+    <criterion id="5">
+      <description>Entity references work</description>
+      <verification>Referenced entities are clickable and navigate to relevant detail pages</verification>
+    </criterion>
+  </acceptance-criteria>
+</story-context>

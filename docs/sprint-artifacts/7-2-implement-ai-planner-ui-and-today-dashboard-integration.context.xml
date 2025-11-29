@@ -1,0 +1,201 @@
+<context>
+  <id>7-2-implement-ai-planner-ui-and-today-dashboard-integration</id>
+  <title>Story 7.2: AI Planner UI and Today Dashboard Integration</title>
+  <description>Implement the frontend UI for the AI planner and integrate it with the Today dashboard, providing users with personalized wedding planning suggestions and quick access to AI-powered assistance.</description>
+  
+  <requirements>
+    <requirement id="7.2.1" priority="high">
+      <description>Create AI Planner page with question input, focus area selector, and suggestion display</description>
+      <acceptance-criteria>
+        <criterion>Page accessible at /ai route</criterion>
+        <criterion>Textarea for user questions with placeholder text</criterion>
+        <criterion>Focus area dropdown with options: Overall, Checklists, Vendors, Budget, Guests, Rituals</criterion>
+        <criterion>Submit button with loading states</criterion>
+        <criterion>Responsive design using shadcn/ui components</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.2.2" priority="high">
+      <description>Implement suggestion cards with category badges, priority indicators, and navigation links</description>
+      <acceptance-criteria>
+        <criterion>Each suggestion displays title, description, category, and priority</criterion>
+        <criterion>Category badges with appropriate icons and colors</criterion>
+        <criterion>Priority indicators (High, Medium, Low) with color coding</criterion>
+        <criterion>Navigation links to related entities (checklist items, events, vendors, guests, budget)</criterion>
+        <criterion>Hover effects and smooth transitions</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.2.3" priority="medium">
+      <description>Add quick question buttons for common queries</description>
+      <acceptance-criteria>
+        <criterion>Pre-defined quick question buttons</criterion>
+        <criterion>Buttons populate the question textarea when clicked</criterion>
+        <criterion>Questions cover common planning scenarios</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.2.4" priority="medium">
+      <description>Implement error handling and loading states</description>
+      <acceptance-criteria>
+        <criterion>Loading spinner during API calls</criterion>
+        <criterion>Error messages with fallback to mock data</criterion>
+        <criterion>Empty state when no suggestions available</criterion>
+        <criterion>Notes/explanation display when provided</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.2.5" priority="high">
+      <description>Integrate AI Planner card into Today dashboard</description>
+      <acceptance-criteria>
+        <criterion>AI Planner card in right column of dashboard</criterion>
+        <criterion>Card shows AI Planner status and quick access</criterion>
+        <criterion>Quick suggestion examples displayed</criterion>
+        <criterion>Link to full AI Planner page</criterion>
+        <criterion>Consistent styling with dashboard theme</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.2.6" priority="medium">
+      <description>Add AI Planner navigation to sidebar</description>
+      <acceptance-criteria>
+        <criterion>AI Planner item in sidebar navigation</criterion>
+        <criterion>Active state highlighting when on /ai route</criterion>
+        <criterion>Consistent with other navigation items</criterion>
+      </acceptance-criteria>
+    </requirement>
+    
+    <requirement id="7.2.7" priority="medium">
+      <description>Create comprehensive test suite for AI Planner functionality</description>
+      <acceptance-criteria>
+        <criterion>Unit tests for all UI components and interactions</criterion>
+        <criterion>Mock API responses and error scenarios</criterion>
+        <criterion>Test user input, form submission, and state management</criterion>
+        <criterion>Test navigation links and routing</criterion>
+      </acceptance-criteria>
+    </requirement>
+  </requirements>
+  
+  <technical-specifications>
+    <specification id="7.2.1">
+      <title>Component Structure</title>
+      <details>
+        <file>app/(app)/ai/page.tsx</file>
+        <description>Main AI Planner page component with state management for questions, suggestions, loading, and errors</description>
+        <dependencies>React hooks, shadcn/ui components, API client, type definitions</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.2.2">
+      <title>Type Definitions</title>
+      <details>
+        <file>lib/ai/types.ts</file>
+        <description>Complete TypeScript interfaces for AI planner requests, responses, suggestions, and focus areas</description>
+        <dependencies>None</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.2.3">
+      <title>API Client</title>
+      <details>
+        <file>lib/api/ai-planner.ts</file>
+        <description>API client functions for calling AI planner endpoints with error handling and mock data support</description>
+        <dependencies>Fetch API, type definitions</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.2.4">
+      <title>Dashboard Integration</title>
+      <details>
+        <file>app/(app)/dashboard/page.tsx</file>
+        <description>Enhanced dashboard with AI Planner card in right column</description>
+        <dependencies>Existing dashboard structure, Link component</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.2.5">
+      <title>Navigation Integration</title>
+      <details>
+        <file>components/layout/sidebar-nav.tsx</file>
+        <description>Sidebar navigation with AI Planner item (already implemented)</description>
+        <dependencies>Existing navigation structure</dependencies>
+      </details>
+    </specification>
+    
+    <specification id="7.2.6">
+      <title>Test Suite</title>
+      <details>
+        <file>__tests__/app/(app)/ai/page.test.tsx</file>
+        <description>Comprehensive test coverage for AI Planner functionality</description>
+        <dependencies>Jest, React Testing Library, mock implementations</dependencies>
+      </details>
+    </specification>
+  </technical-specifications>
+  
+  <implementation-notes>
+    <note priority="high">
+      <title>Mock Data Strategy</title>
+      <content>For development and demo purposes, implement fallback to mock data when API calls fail or return empty results. This ensures the UI is always functional and provides a good user experience during development.</content>
+    </note>
+    
+    <note priority="medium">
+      <title>Responsive Design</title>
+      <content>Ensure the AI Planner page works well on mobile devices. The suggestion cards should stack vertically on smaller screens, and the input form should be easily accessible.</content>
+    </note>
+    
+    <note priority="medium">
+      <title>Accessibility</title>
+      <content>Include proper ARIA labels, keyboard navigation support, and screen reader compatibility. The quick question buttons should be accessible via keyboard navigation.</content>
+    </note>
+    
+    <note priority="low">
+      <title>Performance Optimization</title>
+      <content>Consider implementing debouncing for the question input to avoid excessive API calls. The suggestion cards should use React.memo for performance optimization.</content>
+    </note>
+  </implementation-notes>
+  
+  <dependencies>
+    <dependency id="7.1.1" type="prerequisite">
+      <description>AI Planner Chat Surface backend implementation</description>
+      <status>ready-for-dev</status>
+    </dependency>
+    
+    <dependency id="2.5.1" type="existing">
+      <description>Today Dashboard basic structure</description>
+      <status>completed</status>
+    </dependency>
+    
+    <dependency id="1.2.1" type="existing">
+      <description>App shell with sidebar navigation</description>
+      <status>completed</status>
+    </dependency>
+  </dependencies>
+  
+  <testing-strategy>
+    <test-level>Unit</test-level>
+    <test-coverage>
+      <coverage-area>UI Components</coverage-area>
+      <coverage-area>User Interactions</coverage-area>
+      <coverage-area>API Integration</coverage-area>
+      <coverage-area>Error Handling</coverage-area>
+      <coverage-area>Navigation</coverage-area>
+    </test-coverage>
+    <test-approach>
+      Mock API responses to test both success and error scenarios
+      Test user input validation and form submission
+      Verify proper rendering of suggestions with different categories and priorities
+      Test navigation links and routing
+      Ensure accessibility standards are met
+    </test-approach>
+  </testing-strategy>
+  
+  <acceptance-criteria-summary>
+    <criterion>AI Planner page is accessible and functional</criterion>
+    <criterion>Users can ask questions and receive suggestions</criterion>
+    <criterion>Suggestions are properly categorized and prioritized</criterion>
+    <criterion>Navigation links work correctly</criterion>
+    <criterion>Dashboard integration provides quick access</criterion>
+    <criterion>Error handling is graceful with fallback options</criterion>
+    <criterion>All tests pass and coverage is comprehensive</criterion>
+  </acceptance-criteria-summary>
+</context>
