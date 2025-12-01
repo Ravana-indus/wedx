@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: Wedx API
+  version: 1.0.0
+  description: API for Wedx Wedding OS
+paths:
+  /api/weddings:
+    get:
+      summary: List user's weddings
+      responses:
+        '200':
+          description: List of weddings
+    post:
+      summary: Create a new wedding (Start Wizard)
+      responses:
+        '201':
+          description: Created
+  /api/weddings/{id}:
+    get:
+      summary: Get wedding details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Wedding details
+  /api/weddings/{id}/events:
+    get:
+      summary: List events
+    post:
+      summary: Add event
+  /api/checklist:
+    get:
+      summary: Get checklist items
+      parameters:
+        - name: wedding_id
+          in: query
+          required: true
+          schema:
+            type: string
+    post:
+      summary: Add checklist item
+  /api/checklist-items/{id}:
+    patch:
+      summary: Update checklist item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+  /api/vendors/leads:
+    post:
+      summary: Create vendor lead
+  /api/vendors/{id}/whatsapp-log:
+    post:
+      summary: Log outbound WhatsApp initiation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: string
+                  description: Optional event context
+  /api/ai/image:
+    post:
+      summary: Generate image (Nano Banana)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                style:
+                  type: string
